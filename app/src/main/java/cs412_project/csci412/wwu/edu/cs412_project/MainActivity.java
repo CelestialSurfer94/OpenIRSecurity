@@ -41,35 +41,9 @@ public class MainActivity extends AppCompatActivity {
         String d = device.getText().toString();
         String t = trigger.getText().toString();
 
-        // create firebase entry here
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-       // DatabaseReference ref = db.getReference("users/ID1/email");
-       // ref.setValue("TESTTTTTTT@gmail.com");
-
-
-        DatabaseReference ref = db.getReference("users");
-
-        String id = "ID3";
-        ref.child(id).setValue("USER_Kalvin");
-        DatabaseReference ref2 = db.getReference("users/"+id);
-        ref2.child("device1").setValue("door_sensor");
-//        String key = ref.child("users/"+id).push().getKey();
-//        Log.d("keyyyyyyyyyy",key);
-
-
-
-//        String key = ref.child("users").push().getKey();
-//        User user = new User("1234", "My_Device");
-//        Map<String, Object> userVals = user.toMap();
-//
-//        Map<String, Object> childUpdates = new HashMap<>();
-//        childUpdates.put("/users/" + key, userVals);
-//        childUpdates.put("/user-posts/" + userId + "/" + key, userVals);
-
-
-
-
-        /* ===================to test database =======================*/
+        User test = new User("12","1838213","sutingk@wwu.edu");
+        DatabaseManager dbm = new DatabaseManager();
+        dbm.createUser(test);
     }
 
 }
