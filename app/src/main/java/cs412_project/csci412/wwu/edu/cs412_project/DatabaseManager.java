@@ -20,6 +20,7 @@ public class DatabaseManager {
         ref = db.getReference("users/"+u.getId());
         ref.child("email").setValue(u.getEmail());
         ref.child("token").setValue(u.getToken());
+        ref.child("devices").setValue(null);
     /*
         String id = "ID3";
         ref.child(id).setValue("USER_Kalvin");
@@ -27,18 +28,34 @@ public class DatabaseManager {
         ref2.child("device1").setValue("door_sensor");
         */
     }
-    public void addDevice(String device) {
-
+    public void addDevice(Device device, String userID) {
+        DatabaseReference ref = db.getReference("users/" + userID + "/devices");
+        ref.child(device.getName()).setValue(null);
+        ref = db.getReference("users/" + userID + "/devices/" + device.getName());
+        ref.child("deviceName").setValue(device.getName());
+        ref.child("isArmed").setValue(false);
+        ref.child("isOnline").setValue(false);
+        ref.child("wifiSSD").setValue("");
+        ref.child("wifiPass").setValue("");
+        ref.child("triggerEvents").setValue(null);
     }
-    public void delDevice(String device) {
-
+    public void delDevice(Device device, String userID) {
+        DatabaseReference ref = db.getReference("users/" + userID + "/devices/" + device.getName());
+        ref.child(device.getName()).removeValue();
     }
-    public void addTrigger(String trig) {
-
+    public void addTrigger(String trig, Device device, User user) {
+        DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + device.getName() + "/triggerEvents");
+        ref.child("trigger1").setValue("10.25.2018:14:45");
     }
-    public void delTrigger(String trig) {
-
+    public void delTrigger(String trig, Device device, String userID) {
+        DatabaseReference ref = db.getReference("users/" + userID + "/devices/" + device.getName() + "/triggerEvents");
+        ref.child(trig).removeValue();
     }
+    public void delUser(User user) {
+        DatabaseReference ref = db.getReference("users");
+        ref.child(user.getId()).removeValue();
+    }
+
 
 
 

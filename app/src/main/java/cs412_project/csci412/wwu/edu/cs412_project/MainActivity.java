@@ -44,6 +44,16 @@ public class MainActivity extends AppCompatActivity {
         User test = new User("12","1838213","sutingk@wwu.edu");
         DatabaseManager dbm = new DatabaseManager();
         dbm.createUser(test);
+        Device d1 = new Device("Device 1");
+        dbm.addDevice(d1, test.getId());
+        Device d2 = new Device("Device 2");
+        //dbm.addDevice(d2, test.getId());
+        dbm.delDevice(d2, test.getId());
+        //dbm.addTrigger("trigger1", d1, test);
+        dbm.delTrigger("trigger1", d1, test.getId());
+        User test2 = new User("21", "1234123", "cramerg2@wwu.edu");
+        //dbm.createUser(test2);
+        //dbm.delUser(test2);
     }
 
 }
