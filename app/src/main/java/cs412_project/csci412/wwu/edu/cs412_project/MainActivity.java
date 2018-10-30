@@ -33,13 +33,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
         /* ===================to test database =======================*/
-        EditText email = findViewById(R.id.test_email);
-        EditText device = findViewById(R.id.test_device);
-        EditText trigger = findViewById(R.id.test_trigger);
-        String e = email.getText().toString();
-        String d = device.getText().toString();
-        String t = trigger.getText().toString();
 
         User test = new User("12","1838213","sutingk@wwu.edu");
         DatabaseManager dbm = new DatabaseManager();
