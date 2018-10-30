@@ -29,7 +29,8 @@
         </activity>
         <activity android:name=".Sensor_Activity" />
         <activity android:name=".Activity_AddSensor" />
-        <activity android:name=".Activity_log"></activity>
+        <activity android:name=".Activity_log" />
+        <activity android:name=".SensorAcitvity"></activity>
     </application>
 
 </manifest>
