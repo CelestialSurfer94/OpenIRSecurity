@@ -13,5 +13,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="ys">Your Sensors </string>
+    <string name="recentalerts">Recent Alerts </string>
     <string name="title_activity_main">MainActivity</string>
 </resources>

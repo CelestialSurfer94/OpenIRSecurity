@@ -45,6 +45,9 @@ public class User {
     public void setDevices(ArrayList<Device> devices) {
         this.devices = devices;
     }
+    public void addDevices(Device device) {
+        this.devices.add(device);
+    }
 
     public String getEmail() {
         return email;
