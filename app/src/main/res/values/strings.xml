@@ -14,4 +14,9 @@
         completions."
     </string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="add_sensor_title">Add Sensor</string>
+    <string name="enable_default">Enable By Default</string>
+    <string name="recv_notifications">Receive Notifications</string>
+    <string name="sensor_name">Sensor Name</string>
+    <string name="back">Back</string>
 </resources>
