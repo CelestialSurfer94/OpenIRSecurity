@@ -43,6 +43,11 @@ public class MainActivity extends AppCompatActivity {
         //dbm.addTrigger("trigger1", d1, test);
         dbm.delTrigger("trigger1", d1, test.getId());
         User test2 = new User("21", "1234123", "cramerg2@wwu.edu");
+
+        //  testing to be able to retrieve information from database
+        dbm.getDevices(test);
+
+
         //dbm.createUser(test2);
         //dbm.delUser(test2);
     }
