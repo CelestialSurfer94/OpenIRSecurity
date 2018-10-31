@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         /* ===================to test database =======================*/
 
         user = new User("12", "1838213", "sutingk@wwu.edu");
-        dbm = new DatabaseManager();
+        dbm = DatabaseManager.getInstance();
         dbm.createUser(user);
         Device d1 = new Device("Device 1");
         dbm.addDevice(d1, user.getId());
@@ -66,18 +66,15 @@ public class MainActivity extends AppCompatActivity {
         updateView();
 
 
-
-
-
         /* button functionality */
         Button addsensor = findViewById(R.id.addsensorbutton);
-        Button viewall = findViewById(R.id.viewallbutton);
         addsensor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this,Activity_AddSensor.class));
             }
         });
+        Button viewall = findViewById(R.id.viewallbutton);
         viewall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

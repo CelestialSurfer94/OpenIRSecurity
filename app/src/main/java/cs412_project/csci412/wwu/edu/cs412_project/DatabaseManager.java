@@ -10,9 +10,16 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class DatabaseManager {
     private FirebaseDatabase db;
-    private static User user;
+    private User user;
+    private static DatabaseManager instance;
 
-    public DatabaseManager() {
+    public static DatabaseManager getInstance() {
+        if (instance == null)
+            instance = new DatabaseManager();
+        return instance;
+    }
+
+    private DatabaseManager() {
         db = FirebaseDatabase.getInstance();
     }
 
@@ -22,6 +29,9 @@ public class DatabaseManager {
     }
     public void delCurrentUser(User user) {
         this.user = null;
+    }
+    public User getUser() {
+        return this.user;
     }
 
     public void createUser(User u) {
