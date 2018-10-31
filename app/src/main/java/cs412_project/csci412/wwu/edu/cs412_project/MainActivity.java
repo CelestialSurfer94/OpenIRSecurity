@@ -1,5 +1,6 @@
 package cs412_project.csci412.wwu.edu.cs412_project;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -61,10 +63,27 @@ public class MainActivity extends AppCompatActivity {
         user.addDevices(d1);
         user.addDevices(d2);
         dbm.setCurrentUser(user);
-
-
-
         updateView();
+
+
+
+
+
+        /* button functionality */
+        Button addsensor = findViewById(R.id.addsensorbutton);
+        Button viewall = findViewById(R.id.viewallbutton);
+        addsensor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,Activity_AddSensor.class));
+            }
+        });
+        viewall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,Activity_log.class));
+            }
+        });
     }
 
 

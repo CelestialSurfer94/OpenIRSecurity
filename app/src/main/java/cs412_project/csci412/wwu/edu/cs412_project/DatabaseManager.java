@@ -1,5 +1,6 @@
 package cs412_project.csci412.wwu.edu.cs412_project;
 
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -68,6 +69,20 @@ public class DatabaseManager {
     public void delUser(User user) {
         DatabaseReference ref = db.getReference("users");
         ref.child(user.getId()).removeValue();
+    }
+
+    // Retrieve all devices for a given user
+    public String getDevices(User user) {
+        DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/");
+        //DataSnapshot dataSnapshot = new DataSnapshot();
+        //System.out.println(ref.);
+        //ref.orderByChild().GetValueAsync();
+       // DataSnapshot dataSnapshot =
+        //        String
+        //System.out.println(ref.orderByChild("deviceName").GetValueAsync());
+        //TODO figure out whether or not it is better to use firebase listener
+        // or to use a JSON Java query of a webpage -dagmar
+        return null;
     }
 
 

@@ -18,19 +18,19 @@
         android:layout_marginTop="40px"
         android:textSize="12pt"
         />
+
     <EditText
+        android:id="@+id/name_field"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/name_field"
-        android:text="@string/sensor_name"
-        android:gravity="center_horizontal"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header"
         android:layout_marginTop="30px"
+        android:gravity="center_horizontal"
+        android:hint="@string/sensor_name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintWidth_default="percent"
-        app:layout_constraintWidth_percent=".8"
-        />
+        app:layout_constraintWidth_percent=".8" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
