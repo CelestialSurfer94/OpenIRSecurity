@@ -21,4 +21,9 @@
     <string name="recv_notifications">Receive Notifications</string>
     <string name="sensor_name">Sensor Name</string>
     <string name="back">Back</string>
+    <string name="full_log">Full Sensor Logs</string>
+    <string-array name="filter_array">
+        <item>Most Recent</item>
+        <item>Sensor Name</item>
+    </string-array>
 </resources>
