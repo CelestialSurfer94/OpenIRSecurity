@@ -13,7 +13,6 @@ public class User {
     private String email; //username
 
 
-
     public User(String id, String token, String email) {
         this.id = id;
         this.token = token;
@@ -45,6 +44,7 @@ public class User {
     public void setDevices(ArrayList<Device> devices) {
         this.devices = devices;
     }
+
     public void addDevices(Device device) {
         this.devices.add(device);
     }

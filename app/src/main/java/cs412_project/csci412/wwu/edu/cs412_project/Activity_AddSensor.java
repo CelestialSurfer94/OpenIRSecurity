@@ -15,7 +15,7 @@ public class Activity_AddSensor extends AppCompatActivity {
         setContentView(R.layout.activity_addsensor);
     }
 
-    public void createDevice(View v){
+    public void createDevice(View v) {
         EditText name_field = (EditText) findViewById(R.id.name_field);
         CheckBox enable_check = (CheckBox) findViewById(R.id.enable_check);
         CheckBox receive_check = (CheckBox) findViewById(R.id.receive_check);
@@ -32,7 +32,8 @@ public class Activity_AddSensor extends AppCompatActivity {
         enable_check.setChecked(false);
         receive_check.setChecked(false);
     }
-    public void goBack(View v){
+
+    public void goBack(View v) {
         this.finish();
     }
 }

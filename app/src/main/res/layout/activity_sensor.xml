@@ -4,6 +4,81 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cs412_project.csci412.wwu.edu.cs412_project.Sensor_Activity">
+    tools:context=".SensorAcitvity">
+
+    <!--<android.support.design.widget.AppBarLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:theme="@style/AppTheme.AppBarOverlay">-->
+    <!---->
+    <!--<android.support.v7.widget.Toolbar-->
+    <!--android:id="@id/toolbar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="?attr/actionBarSize"-->
+    <!--android:background="?attr/colorPrimary"-->
+    <!--app:popupTheme="@style/AppTheme.PopupOverlay" />-->
+    <!---->
+    <!---->
+    <!---->
+    <!--</android.support.design.widget.AppBarLayout>-->
+
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <TextView
+            android:id="@+id/text_view_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="35dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="36dp"
+            android:text="Sensor_Name"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/armed_button"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/disarmed_button"
+            android:layout_marginEnd="-120dp"
+            android:layout_marginRight="-120dp"
+            android:layout_toStartOf="@+id/disarmed_button"
+            android:layout_toLeftOf="@+id/disarmed_button"
+            android:text="Armed" />
+
+        <Button
+            android:id="@+id/disarmed_button"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/text_view_id"
+            android:layout_alignLeft="@+id/text_view_id"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="179dp"
+            android:layout_marginLeft="179dp"
+            android:layout_marginTop="89dp"
+            android:text="Disarmed" />
+
+        <TextView
+            android:id="@+id/recent_alerts_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="37dp"
+            android:layout_marginLeft="37dp"
+            android:layout_marginTop="187dp"
+            android:text="Recent Alerts"
+            android:textSize="24sp" />
+
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>
