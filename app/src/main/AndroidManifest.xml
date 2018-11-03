@@ -30,6 +30,10 @@
         <activity android:name=".Sensor_Activity" />
         <activity android:name=".Activity_AddSensor" />
         <activity android:name=".Activity_log" />
+        <activity
+            android:name=".AddUserActivity"
+            android:label="@string/title_activity_add_user"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

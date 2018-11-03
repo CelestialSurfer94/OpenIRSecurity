@@ -17,7 +17,10 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -28,6 +31,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     private DatabaseManager dbm;
     private User user;
+    private FirebaseAuth mAuth;
 
     //private User;
     @Override
@@ -36,35 +40,42 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mAuth = FirebaseAuth.getInstance();
 
+        //Authentication stuff
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser == null){
+            Intent i = new Intent(MainActivity.this, LoginActivity.class);
+            startActivityForResult(i,0);
+        } else {
+            Toast.makeText(this,currentUser.getEmail() +"\n" +currentUser.getUid(), Toast.LENGTH_LONG).show();
+            /* ===================to test database =======================*/
+            user = new User(currentUser.getUid(), currentUser.getEmail());
+            dbm = DatabaseManager.getInstance();
+            dbm.createUser(user);
+            Device d1 = new Device("Device 1");
+            dbm.addDevice(d1, user.getId());
+            Device d2 = new Device("Device 2");
+            dbm.addDevice(d2, user.getId());
+            // dbm.delDevice(d2, test.getId());
+            //dbm.addTrigger("trigger1", d1, test);
+            //dbm.delTrigger("trigger1", d1, test.getId());
+            //User test2 = new User("21", "1234123", "cramerg2@wwu.edu");
+            //dbm.createUser(test2);
+            //dbm.delUser(test2);
 
-        /* ===================to test database =======================*/
-
-        user = new User("12", "1838213", "sutingk@wwu.edu");
-        dbm = DatabaseManager.getInstance();
-        dbm.createUser(user);
-        Device d1 = new Device("Device 1");
-        dbm.addDevice(d1, user.getId());
-        Device d2 = new Device("Device 2");
-        dbm.addDevice(d2, user.getId());
-       // dbm.delDevice(d2, test.getId());
-        //dbm.addTrigger("trigger1", d1, test);
-        //dbm.delTrigger("trigger1", d1, test.getId());
-        //User test2 = new User("21", "1234123", "cramerg2@wwu.edu");
-        //dbm.createUser(test2);
-        //dbm.delUser(test2)
-
-        d1.addTrigger("Oct 30, 2018 at 16:18");
-        d1.addTrigger("Oct 31, 2018 at 12:34");
-        d2.addTrigger("Oct 28, 2018 at 1:14");
-        dbm.addTrigger(d1.getTriggers().get(0), d1, user);
-        dbm.addTrigger(d1.getTriggers().get(1), d1, user);
-        dbm.addTrigger(d2.getTriggers().get(0), d2, user);
-        user.addDevices(d1);
-        user.addDevices(d2);
-        dbm.setCurrentUser(user);
-        updateView();
-
+            d1.addTrigger("Oct 30, 2018 at 16:18");
+            d1.addTrigger("Oct 31, 2018 at 12:34");
+            d2.addTrigger("Oct 28, 2018 at 1:14");
+            dbm.addTrigger(d1.getTriggers().get(0), d1, user);
+            dbm.addTrigger(d1.getTriggers().get(1), d1, user);
+            dbm.addTrigger(d2.getTriggers().get(0), d2, user);
+            user.addDevices(d1);
+            user.addDevices(d2);
+            dbm.setCurrentUser(user);
+            updateView();
+        }
 
         /* button functionality */
         Button addsensor = findViewById(R.id.addsensorbutton);
@@ -84,65 +95,90 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void updateView() {
-        TableLayout sensors = findViewById(R.id.tableLayout2);
-        TableLayout alerts = findViewById(R.id.tableLayout);
-
-        TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.WRAP_CONTENT);
-        TableRow.LayoutParams rlp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-
-
-
-
-        String test = "asdfasdfasdfasfd";
-
-        TextView sensorTv, logTv;
-        TableRow sensorRow, logRow;
-
-        ArrayList<Device> devices = user.getDevices();
-        ArrayList<String> triggers;
-        int maxTriggers = 4;
-        for (int i = 0; i < 4; i++) {
-            /* Add devices to view */
-            if (i <= devices.size()-1) {
-                sensorTv = new TextView(this);
-                sensorTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-                sensorTv.setLayoutParams(rlp);
-                sensorTv.setText(devices.get(i).getName());
-                sensorRow = new TableRow(this);
-                sensorRow.setLayoutParams(tlp);
-                sensorRow.addView(sensorTv);
-                sensors.addView(sensorRow, tlp);
-            }
-
-            /* Add logs to view */
-
-            /* 4 logs at max */
-                /* check every device for the most recent trigger */
-            for (int j = 0; j < devices.size(); j++) {
-                triggers = devices.get(j).getTriggers();
-
-                /* get jth index of device */
-                if (i <= triggers.size()-1) {
-                    maxTriggers--;
-                    logTv = new TextView(this);
-                    logTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-                    logTv.setLayoutParams(rlp);
-                    logTv.setText(devices.get(j).getName() + " " + triggers.get(i));
-                    logRow = new TableRow(this);
-                    logRow.setLayoutParams(tlp);
-                    logRow.addView(logTv);
-                    alerts.addView(logRow, tlp);
-                }
-            }
-        }
-
-
-       // alerts.addView(row,tlp);
-
-
-
-
+    @Override
+    public void onStart(){
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
     }
 
+
+    public void updateView() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser == null) {
+            Intent i = new Intent(MainActivity.this, LoginActivity.class);
+           // startActivityForResult(i,0);
+        } else {
+            TableLayout sensors = findViewById(R.id.tableLayout2);
+            TableLayout alerts = findViewById(R.id.tableLayout);
+
+            TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
+            TableRow.LayoutParams rlp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+
+            String test = "asdfasdfasdfasfd";
+            TextView sensorTv, logTv;
+            TableRow sensorRow, logRow;
+
+            ArrayList<Device> devices = user.getDevices();
+            ArrayList<String> triggers;
+            //sensorTv.clearComposingText();
+            int maxTriggers = 4;
+            for (int i = 0; i < 4; i++) {
+                /* Add devices to view */
+                if (i <= devices.size() - 1) {
+                    sensorTv = new TextView(this);
+                    sensorTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                    sensorTv.setLayoutParams(rlp);
+                    sensorTv.setText(devices.get(i).getName());
+                    sensorRow = new TableRow(this);
+                    sensorRow.setLayoutParams(tlp);
+                    sensorRow.addView(sensorTv);
+                    sensors.addView(sensorRow, tlp);
+                }
+
+                /* Add logs to view */
+
+                /* 4 logs at max */
+                /* check every device for the most recent trigger */
+                for (int j = 0; j < devices.size(); j++) {
+                    triggers = devices.get(j).getTriggers();
+
+                    /* get jth index of device */
+                    if (i <= triggers.size() - 1) {
+                        maxTriggers--;
+                        logTv = new TextView(this);
+                        logTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                        logTv.setLayoutParams(rlp);
+                        logTv.setText(devices.get(j).getName() + " " + triggers.get(i));
+                        logRow = new TableRow(this);
+                        logRow.setLayoutParams(tlp);
+                        logRow.addView(logTv);
+                        alerts.addView(logRow, tlp);
+                    }
+                }
+            }
+            TextView userText = findViewById(R.id.userEmailText);
+            userText.setText(user.getEmail());
+        }
+
+       // alerts.addView(row,tlp);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateView();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case 0:
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                user = new User(currentUser.getUid(), currentUser.getEmail());
+                updateView();
+                break;
+
+        }
+    }
 }

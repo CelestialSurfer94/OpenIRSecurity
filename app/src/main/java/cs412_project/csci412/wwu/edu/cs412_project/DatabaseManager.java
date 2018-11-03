@@ -27,9 +27,11 @@ public class DatabaseManager {
         this.user = user;
 
     }
+
     public void delCurrentUser(User user) {
         this.user = null;
     }
+
     public User getUser() {
         return this.user;
     }
@@ -39,7 +41,6 @@ public class DatabaseManager {
         ref.child(u.getId()).setValue(null);
         ref = db.getReference("users/" + u.getId());
         ref.child("email").setValue(u.getEmail());
-        ref.child("token").setValue(u.getToken());
         ref.child("devices").setValue(null);
     /*
         String id = "ID3";

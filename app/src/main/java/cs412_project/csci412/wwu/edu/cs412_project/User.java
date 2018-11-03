@@ -7,15 +7,13 @@ import java.util.ArrayList;
  */
 
 public class User {
-    private String id; //reference id
-    private String token;
+    private String id; //reference id provided by firebase (UUID) of user.
     private ArrayList<Device> devices;
     private String email; //username
 
 
-    public User(String id, String token, String email) {
+    public User(String id, String email) {
         this.id = id;
-        this.token = token;
         this.email = email;
 
         devices = new ArrayList<>();
@@ -27,14 +25,6 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String authToken) {
-        this.token = authToken;
     }
 
     public ArrayList<Device> getDevices() {

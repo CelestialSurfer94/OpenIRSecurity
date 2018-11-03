@@ -53,8 +53,8 @@ public class Activity_AddSensor extends AppCompatActivity {
         Device d = new Device(name_field.getText().toString());
         d.setArmed(armed);
 
-        //TODO: Add sensor to user, once user is known
-
+        //TODO: FIX BUG THAT ON FIRST LOGIN:
+        dbm.getUser().addDevices(d);
         //Resets EditText and CheckBox's so that user can add another device
         Toast.makeText(this, "Sensor Added", Toast.LENGTH_LONG).show();
         name_field.setText("Sensor Name");
