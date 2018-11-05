@@ -123,7 +123,9 @@ public class MainActivity extends AppCompatActivity {
             TextView sensorTv, logTv;
             TableRow sensorRow, logRow;
 
-            ArrayList<Device> devices = user.getDevices();
+            //Query List of Devices
+            ArrayList<Device> devices = dbm.getDevices();
+            //ArrayList<Device> devices = user.getDevices();
             ArrayList<String> triggers;
             //sensorTv.clearComposingText();
             int maxTriggers = 4;
@@ -181,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 user = new User(currentUser.getUid(), currentUser.getEmail());
                 dbm = DatabaseManager.getInstance();
+                dbm.createUser(user);
                 dbm.setCurrentUser(user);
                 updateView();
                 break;
