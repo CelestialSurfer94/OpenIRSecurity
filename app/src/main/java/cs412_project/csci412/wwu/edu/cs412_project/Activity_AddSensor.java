@@ -35,11 +35,7 @@ public class Activity_AddSensor extends AppCompatActivity {
         addSensor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText et = findViewById(R.id.name_field);
-                String name = et.getText().toString();
-                Log.w("TESTTTTT", dbm.getUser().getId());
-                Device device = new Device(name);
-                dbm.addDevice(device,dbm.getUser().getId());
+                createDevice(view);
             }
         });
     }
@@ -53,11 +49,11 @@ public class Activity_AddSensor extends AppCompatActivity {
         Device d = new Device(name_field.getText().toString());
         d.setArmed(armed);
 
-        //TODO: FIX BUG THAT ON FIRST LOGIN:
         dbm.getUser().addDevices(d);
+        dbm.addDevice(d, dbm.getUser().getId());
         //Resets EditText and CheckBox's so that user can add another device
         Toast.makeText(this, "Sensor Added", Toast.LENGTH_LONG).show();
-        name_field.setText("Sensor Name");
+        name_field.setText("");
         enable_check.setChecked(false);
         receive_check.setChecked(false);
     }

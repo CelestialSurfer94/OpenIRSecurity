@@ -50,9 +50,13 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(i,0);
         } else {
             Toast.makeText(this,currentUser.getEmail() +"\n" +currentUser.getUid(), Toast.LENGTH_LONG).show();
-            /* ===================to test database =======================*/
             user = new User(currentUser.getUid(), currentUser.getEmail());
             dbm = DatabaseManager.getInstance();
+            dbm.setCurrentUser(user);
+
+
+
+            /* ===================to test database =======================
             dbm.createUser(user);
             Device d1 = new Device("Device 1");
             dbm.addDevice(d1, user.getId());
@@ -74,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
             user.addDevices(d1);
             user.addDevices(d2);
             dbm.setCurrentUser(user);
+            */
             updateView();
         }
 
@@ -159,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
             TextView userText = findViewById(R.id.userEmailText);
             userText.setText(user.getEmail());
         }
-
        // alerts.addView(row,tlp);
     }
 
@@ -173,9 +177,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
-            case 0:
+            case 0: //login activity, create user activity
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 user = new User(currentUser.getUid(), currentUser.getEmail());
+                dbm = DatabaseManager.getInstance();
+                dbm.setCurrentUser(user);
                 updateView();
                 break;
 

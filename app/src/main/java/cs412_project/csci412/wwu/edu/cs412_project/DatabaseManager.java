@@ -1,8 +1,15 @@
 package cs412_project.csci412.wwu.edu.cs412_project;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Map;
 
 /**
  * Created by propers on 10/23/18.
@@ -60,16 +67,44 @@ public class DatabaseManager {
         ref.child("wifiSSD").setValue("");
         ref.child("wifiPass").setValue("");
         ref.child("triggerEvents").setValue(null);
+        ref.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                String deviceName = (String)dataSnapshot.getValue();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void delDevice(Device device, String userID) {
         DatabaseReference ref = db.getReference("users/" + userID + "/devices/" + device.getName());
         ref.child(device.getName()).removeValue();
+
+        //todo
     }
 
     public void addTrigger(String trig, Device device, User user) {
         DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + device.getName() + "/triggerEvents");
-        ref.child("trigger1").setValue("10.25.2018:14:45");
+        ref.child(device.getName()).setValue(trig);
     }
 
     public void delTrigger(String trig, Device device, String userID) {
@@ -84,7 +119,7 @@ public class DatabaseManager {
 
     // Retrieve all devices for a given user
     public String getDevices(User user) {
-        DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/");
+
         //DataSnapshot dataSnapshot = new DataSnapshot();
         //System.out.println(ref.);
         //ref.orderByChild().GetValueAsync();
@@ -96,5 +131,12 @@ public class DatabaseManager {
         return null;
     }
 
+    private void addDevice(String device){
+        Device d = new Device(device);
+        //todo:
+        //store devices to sqllite server or sharedprefs?
+        //then onCreate, query the devices, add them to the view since
+        //same idea with the device triggers.
+    }
 
 }
