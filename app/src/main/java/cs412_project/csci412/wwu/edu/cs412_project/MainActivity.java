@@ -119,11 +119,17 @@ public class MainActivity extends AppCompatActivity {
             TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
             TableRow.LayoutParams rlp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
 
+            //sensors.removeAllViews();
+
+            //alerts.removeAllViews();
+
             String test = "asdfasdfasdfasfd";
             TextView sensorTv, logTv;
             TableRow sensorRow, logRow;
 
-            ArrayList<Device> devices = user.getDevices();
+            //Query List of Devices
+            ArrayList<Device> devices = dbm.getDevices();
+            //ArrayList<Device> devices = user.getDevices();
             ArrayList<String> triggers;
             //sensorTv.clearComposingText();
             int maxTriggers = 4;
@@ -181,6 +187,15 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 user = new User(currentUser.getUid(), currentUser.getEmail());
                 dbm = DatabaseManager.getInstance();
+                //dbm.createUser(user);
+                dbm.setCurrentUser(user);
+                updateView();
+                break;
+            case 1:
+                currentUser = mAuth.getCurrentUser();
+                user = new User(currentUser.getUid(), currentUser.getEmail());
+                dbm = DatabaseManager.getInstance();
+                dbm.createUser(user);
                 dbm.setCurrentUser(user);
                 updateView();
                 break;

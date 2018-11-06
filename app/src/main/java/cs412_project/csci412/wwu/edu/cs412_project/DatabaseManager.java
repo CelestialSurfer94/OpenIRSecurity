@@ -2,13 +2,16 @@ package cs412_project.csci412.wwu.edu.cs412_project;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -19,6 +22,7 @@ public class DatabaseManager {
     private FirebaseDatabase db;
     private User user;
     private static DatabaseManager instance;
+    private ArrayList<Device> devices;
 
     public static DatabaseManager getInstance() {
         if (instance == null)
@@ -28,6 +32,7 @@ public class DatabaseManager {
 
     private DatabaseManager() {
         db = FirebaseDatabase.getInstance();
+        devices = new ArrayList<>();
     }
 
     public void setCurrentUser(User user) {
@@ -62,7 +67,7 @@ public class DatabaseManager {
         ref.child(device.getName()).setValue(null);
         ref = db.getReference("users/" + userID + "/devices/" + device.getName());
         ref.child("deviceName").setValue(device.getName());
-        ref.child("isArmed").setValue(false);
+        ref.child("isArmed").setValue(device.isArmed());
         ref.child("isOnline").setValue(false);
         ref.child("wifiSSD").setValue("");
         ref.child("wifiPass").setValue("");
@@ -118,7 +123,33 @@ public class DatabaseManager {
     }
 
     // Retrieve all devices for a given user
-    public String getDevices(User user) {
+    public ArrayList<Device> getDevices() {
+
+
+
+        DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                DataSnapshot newData = dataSnapshot;
+                Iterable<DataSnapshot> deviceList = newData.getChildren();
+                for (DataSnapshot data: deviceList) {
+                    String devKey = data.getKey().toString();
+                    Log.d("DEBUG", devKey);
+                    Device d = new Device(devKey);
+                    devices.add(d);
+                    //DatabaseReference ref2 = db.getReference("users/" + user.getId() + "/devices/" + devKey + "isArmed");
+                    //d.setArmed();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
 
         //DataSnapshot dataSnapshot = new DataSnapshot();
         //System.out.println(ref.);
@@ -128,7 +159,7 @@ public class DatabaseManager {
         //System.out.println(ref.orderByChild("deviceName").GetValueAsync());
         //TODO figure out whether or not it is better to use firebase listener
         // or to use a JSON Java query of a webpage -dagmar
-        return null;
+        return devices;
     }
 
     private void addDevice(String device){
@@ -137,6 +168,10 @@ public class DatabaseManager {
         //store devices to sqllite server or sharedprefs?
         //then onCreate, query the devices, add them to the view since
         //same idea with the device triggers.
+    }
+
+    public void addDeviceToArray(ArrayList<Device> devices, Device d){
+        devices.add(d);
     }
 
 }
