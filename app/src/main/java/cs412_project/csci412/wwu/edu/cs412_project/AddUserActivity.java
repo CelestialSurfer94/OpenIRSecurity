@@ -22,6 +22,7 @@ public class AddUserActivity extends AppCompatActivity {
     private EditText password1Text;
     private Button createUserButton;
     private FirebaseAuth mAuth;
+    private DatabaseManager dbm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +35,7 @@ public class AddUserActivity extends AppCompatActivity {
         password1Text = findViewById(R.id.createUserPasswordText1);
         createUserButton = findViewById(R.id.createUserButton);
         mAuth = FirebaseAuth.getInstance();
+        dbm = DatabaseManager.getInstance();
     }
 
     public void createUser(View v){
@@ -53,6 +55,9 @@ public class AddUserActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 FirebaseUser user = mAuth.getCurrentUser();
+                                User newUser = new User(user.getUid(), user.getEmail());
+                                dbm.setCurrentUser(newUser);
+                                dbm.createUser(newUser);
                                 finish();
                             } else {
                                 // If sign in fails, display a message to the user.

@@ -133,6 +133,7 @@ public class DatabaseManager {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 DataSnapshot newData = dataSnapshot;
                 Iterable<DataSnapshot> deviceList = newData.getChildren();
+                devices.clear();
                 for (DataSnapshot data: deviceList) {
                     String devKey = data.getKey().toString();
                     Log.d("DEBUG", devKey);

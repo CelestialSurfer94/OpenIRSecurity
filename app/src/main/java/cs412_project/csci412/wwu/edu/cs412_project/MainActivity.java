@@ -133,40 +133,44 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<String> triggers;
             //sensorTv.clearComposingText();
             int maxTriggers = 4;
-            for (int i = 0; i < 4; i++) {
-                /* Add devices to view */
-                if (i <= devices.size() - 1) {
-                    sensorTv = new TextView(this);
-                    sensorTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-                    sensorTv.setLayoutParams(rlp);
-                    sensorTv.setText(devices.get(i).getName());
-                    sensorRow = new TableRow(this);
-                    sensorRow.setLayoutParams(tlp);
-                    sensorRow.addView(sensorTv);
-                    sensors.addView(sensorRow, tlp);
-                }
+            sensors.removeAllViews();
+            int numDevices = devices.size();
+            for (int x = 0; x < numDevices; x++) {
 
-                /* Add logs to view */
+                sensorTv = new TextView(this);
+                sensorTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                sensorTv.setLayoutParams(rlp);
 
-                /* 4 logs at max */
-                /* check every device for the most recent trigger */
-                for (int j = 0; j < devices.size(); j++) {
-                    triggers = devices.get(j).getTriggers();
-
-                    /* get jth index of device */
-                    if (i <= triggers.size() - 1) {
-                        maxTriggers--;
-                        logTv = new TextView(this);
-                        logTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-                        logTv.setLayoutParams(rlp);
-                        logTv.setText(devices.get(j).getName() + " " + triggers.get(i));
-                        logRow = new TableRow(this);
-                        logRow.setLayoutParams(tlp);
-                        logRow.addView(logTv);
-                        alerts.addView(logRow, tlp);
-                    }
-                }
+                sensorTv.setText(devices.get(x).getName());
+                String asdf = devices.get(x).getName();
+                sensorRow = new TableRow(this);
+                sensorRow.setLayoutParams(tlp);
+                sensorRow.addView(sensorTv);
+                sensors.addView(sensorRow, tlp);
             }
+
+
+            /* Add logs to view */
+
+            /* 4 logs at max */
+            /* check every device for the most recent trigger */
+//            for (int j = 0; j < devices.size(); j++) {
+//                triggers = devices.get(j).getTriggers();
+//
+//                /* get jth index of device */
+//                if (i <= triggers.size() - 1) {
+//                    maxTriggers--;
+//                    logTv = new TextView(this);
+//                    logTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+//                    logTv.setLayoutParams(rlp);
+//                    logTv.setText(devices.get(j).getName() + " " + triggers.get(i));
+//                    logRow = new TableRow(this);
+//                    logRow.setLayoutParams(tlp);
+//                    logRow.addView(logTv);
+//                    alerts.addView(logRow, tlp);
+//                }
+//            }
+
             TextView userText = findViewById(R.id.userEmailText);
             userText.setText(user.getEmail());
         }
@@ -187,19 +191,9 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 user = new User(currentUser.getUid(), currentUser.getEmail());
                 dbm = DatabaseManager.getInstance();
-                //dbm.createUser(user);
                 dbm.setCurrentUser(user);
                 updateView();
                 break;
-            case 1:
-                currentUser = mAuth.getCurrentUser();
-                user = new User(currentUser.getUid(), currentUser.getEmail());
-                dbm = DatabaseManager.getInstance();
-                dbm.createUser(user);
-                dbm.setCurrentUser(user);
-                updateView();
-                break;
-
         }
     }
 }
