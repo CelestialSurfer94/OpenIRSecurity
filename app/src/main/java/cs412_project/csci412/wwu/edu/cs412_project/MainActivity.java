@@ -27,11 +27,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     private DatabaseManager dbm;
     private User user;
     private FirebaseAuth mAuth;
+    private Timer autoUpdate;
 
     //private User;
     @Override
@@ -40,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mAuth = FirebaseAuth.getInstance();
 
         //Authentication stuff
         mAuth = FirebaseAuth.getInstance();
@@ -136,13 +138,20 @@ public class MainActivity extends AppCompatActivity {
             sensors.removeAllViews();
             int numDevices = devices.size();
             for (int x = 0; x < numDevices; x++) {
-
                 sensorTv = new TextView(this);
                 sensorTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                 sensorTv.setLayoutParams(rlp);
 
                 sensorTv.setText(devices.get(x).getName());
-                String asdf = devices.get(x).getName();
+                final String deviceName = devices.get(x).getName();
+                sensorTv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(MainActivity.this,Sensor_Activity.class);
+                        intent.putExtra("devicename", deviceName);
+                        startActivity(intent);
+                    }
+                });
                 sensorRow = new TableRow(this);
                 sensorRow.setLayoutParams(tlp);
                 sensorRow.addView(sensorTv);
@@ -178,9 +187,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+
     protected void onResume() {
+
         super.onResume();
         updateView();
+        autoUpdate = new Timer();
+        autoUpdate.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateView();
+                        //Toast.makeText(MainActivity.this, "refreshed view", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        }, 500, 10000);
     }
 
     @Override

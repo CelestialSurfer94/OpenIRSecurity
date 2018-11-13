@@ -125,8 +125,6 @@ public class DatabaseManager {
     // Retrieve all devices for a given user
     public ArrayList<Device> getDevices() {
 
-
-
         DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -149,7 +147,6 @@ public class DatabaseManager {
 
             }
         });
-
 
 
         //DataSnapshot dataSnapshot = new DataSnapshot();
