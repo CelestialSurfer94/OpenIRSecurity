@@ -56,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
             dbm = DatabaseManager.getInstance();
             dbm.setCurrentUser(user);
 
-
-
             /* ===================to test database =======================
             dbm.createUser(user);
             Device d1 = new Device("Device 1");
@@ -132,6 +130,19 @@ public class MainActivity extends AppCompatActivity {
             //Query List of Devices
             ArrayList<Device> devices = dbm.getDevices();
             //ArrayList<Device> devices = user.getDevices();
+
+            /* test */
+            if (devices.size() != 0) {
+                dbm.addTrigger("trigger1", devices.get(0));
+                dbm.addTrigger("tr2", devices.get(0));
+                dbm.addTrigger("tr3", devices.get(0));
+                dbm.addTrigger("asdfasdf", devices.get(0));
+            }
+            Log.w("trig", "trig");
+
+
+
+
             ArrayList<String> triggers;
             //sensorTv.clearComposingText();
             int maxTriggers = 4;

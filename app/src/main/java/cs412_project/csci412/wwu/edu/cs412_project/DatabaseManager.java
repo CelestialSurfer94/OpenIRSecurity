@@ -23,6 +23,7 @@ public class DatabaseManager {
     private User user;
     private static DatabaseManager instance;
     private ArrayList<Device> devices;
+    private ArrayList<String> triggers;
 
     public static DatabaseManager getInstance() {
         if (instance == null)
@@ -33,6 +34,7 @@ public class DatabaseManager {
     private DatabaseManager() {
         db = FirebaseDatabase.getInstance();
         devices = new ArrayList<>();
+        triggers = new ArrayList<>();
     }
 
     public void setCurrentUser(User user) {
@@ -107,9 +109,10 @@ public class DatabaseManager {
         //todo
     }
 
-    public void addTrigger(String trig, Device device, User user) {
+    public void addTrigger(String trig, Device device) {
         DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + device.getName() + "/triggerEvents");
-        ref.child(device.getName()).setValue(trig);
+        ref.child(trig).setValue(trig);
+
     }
 
     public void delTrigger(String trig, Device device, String userID) {
@@ -124,7 +127,6 @@ public class DatabaseManager {
 
     // Retrieve all devices for a given user
     public ArrayList<Device> getDevices() {
-
         DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -147,8 +149,6 @@ public class DatabaseManager {
 
             }
         });
-
-
         //DataSnapshot dataSnapshot = new DataSnapshot();
         //System.out.println(ref.);
         //ref.orderByChild().GetValueAsync();
@@ -158,6 +158,32 @@ public class DatabaseManager {
         //TODO figure out whether or not it is better to use firebase listener
         // or to use a JSON Java query of a webpage -dagmar
         return devices;
+    }
+
+    public ArrayList<String> getTriggers(Device device) {
+        DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + device.getName() + "/triggerEvents");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                DataSnapshot newData = dataSnapshot;
+                Iterable<DataSnapshot> deviceList = newData.getChildren();
+                triggers.clear();
+                for (DataSnapshot data: deviceList) {
+                    String devKey = data.getKey();
+                    Log.d("DEBUG", devKey);
+                    triggers.add(devKey);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        return triggers;
+
+
+
     }
 
     private void addDevice(String device){

@@ -27,22 +27,36 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="20px"
         >
-
     </Spinner>
 
-    <TableLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/log_table"
-        app:layout_constraintLeft_toLeftOf="@id/filter_menu"
+    <!--<TableLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/log_table"-->
+        <!--app:layout_constraintLeft_toLeftOf="@id/filter_menu"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/filter_menu"-->
+        <!--&gt;-->
+        <!--<TableRow>-->
+            <!--<TextView-->
+                <!--android:text="Hello World"-->
+                <!--/>-->
+        <!--</TableRow>-->
+    <!--</TableLayout>-->
+    <ScrollView
+        android:id="@+id/sensorscroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/filter_menu"
-        >
-        <TableRow>
-            <TextView
-                android:text="Hello World"
-                />
-        </TableRow>
-    </TableLayout>
+        android:layout_marginLeft="37dp"
+        android:layout_marginRight="37dp">
+
+        <TableLayout
+            android:id="@+id/tableLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></TableLayout>
+    </ScrollView>
 
 
 </android.support.constraint.ConstraintLayout>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SensorAcitvity">
+    tools:context=".Sensor_Activity">
 
     <!--<android.support.design.widget.AppBarLayout-->
     <!--android:layout_width="match_parent"-->
@@ -78,6 +78,20 @@
             android:layout_marginTop="187dp"
             android:text="Recent Alerts"
             android:textSize="24sp" />
+
+        <ScrollView
+            android:id="@+id/sensorscroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/recent_alerts_tv"
+            android:layout_marginLeft="37dp"
+            android:layout_marginRight="37dp">
+            <TableLayout
+                android:id="@+id/tableLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TableLayout>
+        </ScrollView>
 
     </RelativeLayout>
 
