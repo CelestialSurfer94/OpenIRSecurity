@@ -9,6 +9,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -112,7 +113,10 @@ public class DatabaseManager {
     public void addTrigger(String trig, Device device) {
         DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + device.getName() + "/triggerEvents");
         ref.child(trig).setValue(trig);
-
+    }
+    public void addTimestamp(Device device) {
+        DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + device.getName() + "/triggerEvents");
+        ref.child("Timestamp:").setValue(ServerValue.TIMESTAMP);
     }
 
     public void delTrigger(String trig, Device device, String userID) {
@@ -169,8 +173,8 @@ public class DatabaseManager {
                 Iterable<DataSnapshot> deviceList = newData.getChildren();
                 triggers.clear();
                 for (DataSnapshot data: deviceList) {
-                    String devKey = data.getKey();
-                    Log.d("DEBUG", devKey);
+                    String devKey = data.getValue().toString();
+                    Log.d("DEBUGTrig", devKey);
                     triggers.add(devKey);
                 }
             }
