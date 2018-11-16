@@ -151,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
             ArrayList<String> triggers;
             //sensorTv.clearComposingText();
             int maxTriggers = 4;

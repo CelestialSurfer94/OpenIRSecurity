@@ -10,7 +10,10 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -69,11 +72,14 @@ public class Sensor_Activity extends AppCompatActivity {
 
         /* update view of triggers */
         alerts.removeAllViews();
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat date = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
         for (int x = 0; x < triggers.size(); x++) {
             logTv = new TextView(this);
             logTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             logTv.setLayoutParams(rlp);
-            logTv.setText(triggers.get(x));
+            cal.setTimeInMillis(Long.parseLong(triggers.get(x)));
+            logTv.setText(date.format(cal.getTime()));
             logRow = new TableRow(this);
             logRow.setLayoutParams(tlp);
             logRow.addView(logTv);
