@@ -15,6 +15,6 @@ This ID will be required during the set-up of all new IR devices attached to you
 Plug the OpenIRSecurity hardware into your computer using the included microUSB. Run the installer script. [TODO:
 Include more details about how to run the script once we have written it and figured out the details of the process] 
 This script will install the OpenIRSecurity program on your ESP. Setup will require the user ID emailed to you during
-the signup process, as well as your local WiFi username and password. Once the script has executed successfully, 
+the signup process, as well as your device name, local WiFi username and password. Once the script has executed successfully, 
 open your application and go to the “Add Sensor” page. Name your new device. Triggers should appear automatically
 on your home screen. 
