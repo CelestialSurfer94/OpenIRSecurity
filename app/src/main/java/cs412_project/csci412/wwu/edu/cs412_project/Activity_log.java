@@ -17,8 +17,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Activity_log extends AppCompatActivity {
+    private Timer autoUpdate;
     private DatabaseManager dbm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,23 @@ public class Activity_log extends AppCompatActivity {
         filter_menu.setAdapter(adapter);
         addLog();
     }
-
+    @Override
+    public void onResume(){
+        super.onResume();
+        autoUpdate = new Timer();
+        autoUpdate.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        addLog();
+                        //Toast.makeText(MainActivity.this, "refreshed view", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        }, 500, 10000);
+    }
     public void addLog(){
 //        TextView tv = new TextView(this);
 //        tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
@@ -64,18 +83,37 @@ public class Activity_log extends AppCompatActivity {
         /* update view of triggers */
         alerts.removeAllViews();
         ArrayList<String> triggers = new ArrayList<String>();
-        ArrayList<Date> allDevicesDates = new ArrayList<Date>();
+        ArrayList<String> allDevicesDates = new ArrayList<String>();
 
         /* grab every trigger from every device */
         Log.w("aaahhd",devices.size() + "");
+
         for (int x = 0; x < devices.size(); x++) {
-            triggers.addAll(dbm.getTriggers(devices.get(x)));
+            ArrayList<String> triggers2 = dbm.getTriggers(devices.get(x));
+            for (int y = 0; y < triggers2.size(); y++) {
+                triggers.add(triggers2.get(y));
+            }
         }
+
+
+        Log.w("aaa1a",triggers.toString());
+
+
+
         /* convert timestamp to date objects and sort */
         Log.w("aaahth",triggers.size() + "");
         SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         for (int x = 0; x < triggers.size(); x++) {
-            allDevicesDates.add(new Date(triggers.get(x)));
+           // allDevicesDates.add(date.format(new Date(triggers.get(x))));
+            logTv = new TextView(this);
+            logTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            logTv.setLayoutParams(rlp);
+            logTv.setText(triggers.get(x));
+            Log.w("thetrigs", triggers.get(x));
+            logRow = new TableRow(this);
+            logRow.setLayoutParams(tlp);
+            logRow.addView(logTv);
+            alerts.addView(logRow, tlp);
         }
 
         /* display all triggers */
@@ -88,7 +126,7 @@ public class Activity_log extends AppCompatActivity {
             logTv = new TextView(this);
             logTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             logTv.setLayoutParams(rlp);
-            logTv.setText(date.format(allDevicesDates.get(x)));
+            logTv.setText(allDevicesDates.get(x));
             logRow = new TableRow(this);
             logRow.setLayoutParams(tlp);
             logRow.addView(logTv);

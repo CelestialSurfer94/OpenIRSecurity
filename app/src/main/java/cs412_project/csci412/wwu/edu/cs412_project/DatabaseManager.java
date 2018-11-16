@@ -170,9 +170,9 @@ public class DatabaseManager {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 DataSnapshot newData = dataSnapshot;
-                Iterable<DataSnapshot> deviceList = newData.getChildren();
+                Iterable<DataSnapshot> trigList = newData.getChildren();
                 triggers.clear();
-                for (DataSnapshot data: deviceList) {
+                for (DataSnapshot data: trigList) {
                     String devKey = data.getValue().toString();
                     Log.d("DEBUGTrig", devKey);
                     triggers.add(devKey);

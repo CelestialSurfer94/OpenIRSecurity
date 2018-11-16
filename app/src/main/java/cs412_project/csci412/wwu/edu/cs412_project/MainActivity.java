@@ -132,21 +132,21 @@ public class MainActivity extends AppCompatActivity {
             //ArrayList<Device> devices = user.getDevices();
 
             /* test */
-            if (devices.size() != 0) {
-
-////                for (int i = 0; i < 8; i++) {
-////                    dbm.addTrigger("trigger1-"+i, devices.get(i));
-////                    dbm.addTrigger("tr2-"+i, devices.get(i));
-////                    dbm.addTrigger("tr3-"+i, devices.get(i));
-////                    dbm.addTrigger("asdfasdf-"+i, devices.get(i));
-////                }
-                for (int i = 0; i < 8; i++) {
-                    dbm.addTimestamp(devices.get(i));
-                    dbm.addTimestamp(devices.get(i));
-                    dbm.addTimestamp(devices.get(i));
-                    dbm.addTimestamp(devices.get(i));
-                }
-            }
+//            if (devices.size() != 0) {
+//
+//////                for (int i = 0; i < 8; i++) {
+//////                    dbm.addTrigger("trigger1-"+i, devices.get(i));
+//////                    dbm.addTrigger("tr2-"+i, devices.get(i));
+//////                    dbm.addTrigger("tr3-"+i, devices.get(i));
+//////                    dbm.addTrigger("asdfasdf-"+i, devices.get(i));
+//////                }
+//                for (int i = 0; i < 8; i++) {
+//                    dbm.addTimestamp(devices.get(i));
+//                    dbm.addTimestamp(devices.get(i));
+//                    dbm.addTimestamp(devices.get(i));
+//                    dbm.addTimestamp(devices.get(i));
+//                }
+//            }
 //            Log.w("trig", "trig");
 
 

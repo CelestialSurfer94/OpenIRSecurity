@@ -11,10 +11,13 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Sensor_Activity extends AppCompatActivity {
     private DatabaseManager dbm;
     private Device device = null;
+    private Timer autoUpdate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +25,8 @@ public class Sensor_Activity extends AppCompatActivity {
         String deviceName = getIntent().getStringExtra("devicename");
         TextView devicetv = findViewById(R.id.text_view_id);
         dbm = DatabaseManager.getInstance();
-        /* find device by the devicename */
+
+        /* find device by the String device name */
         for (int i = 0; i < dbm.getDevices().size(); i++) {
            // Log.w("tester",dbm.getUser().getDevices().get(i).getName());
             if (dbm.getDevices().get(i).getName().equals(deviceName)) {
@@ -33,11 +37,28 @@ public class Sensor_Activity extends AppCompatActivity {
             devicetv.setText(device.getName());
         }
 
-
-
         updateView();
     }
+    @Override
+    public void onResume(){
+        super.onResume();
+        autoUpdate = new Timer();
+        autoUpdate.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateView();
+                        //Toast.makeText(MainActivity.this, "refreshed view", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        }, 500, 10000);
+    }
 
+
+    /* ERROR: updates slowly and shows the last one before updating ===============================*/
     public void updateView() {
         ArrayList<String> triggers = dbm.getTriggers(device);
         TableLayout alerts = findViewById(R.id.tableLayout);
