@@ -162,10 +162,14 @@ public class MainActivity extends AppCompatActivity {
                 sensorTv.setLayoutParams(rlp);
 
                 sensorTv.setText(devices.get(x).getName());
-                final String deviceName = devices.get(x).getName();
+
+                //final String deviceName = devices.get(x).getName();
+
                 sensorTv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        TextView tv = (TextView) view;
+                        String deviceName = tv.getText().toString();
                         Intent intent = new Intent(MainActivity.this,Sensor_Activity.class);
                         intent.putExtra("devicename", deviceName);
                         startActivity(intent);
