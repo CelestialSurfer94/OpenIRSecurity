@@ -127,5 +127,15 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            Intent returnIntent = new Intent();
+            setResult(LoginActivity.RESULT_OK, returnIntent);
+            finish();
+        }
+    }
 }
 
