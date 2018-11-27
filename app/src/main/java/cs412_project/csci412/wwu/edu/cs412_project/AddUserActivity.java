@@ -43,10 +43,15 @@ public class AddUserActivity extends AppCompatActivity {
         String pass0 = password0Text.getText().toString();
         String pass1 = password1Text.getText().toString();
 
-        if(!pass0.equals(pass1)){ //passwords do not match
-            Toast.makeText(this, "passwords do not match, try again", Toast.LENGTH_SHORT).show();
+        if (!pass0.equals(pass1)) { //passwords do not match
+            Toast.makeText(this, "Passwords do not match.", Toast.LENGTH_SHORT).show();
             password0Text.setText("");
             password1Text.setText("");
+        }
+
+        else if (pass1.equals("")) { // user attempts to sign in with no password
+            Toast.makeText(this, "Password cannot be empty.", Toast.LENGTH_SHORT).show();
+
         } else {
             mAuth.createUserWithEmailAndPassword(email, pass0)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
