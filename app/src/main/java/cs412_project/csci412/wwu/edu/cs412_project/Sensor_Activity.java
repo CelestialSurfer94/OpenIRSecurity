@@ -15,6 +15,7 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -89,11 +90,23 @@ public class Sensor_Activity extends AppCompatActivity {
         alerts.removeAllViews();
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat date = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+
+        ArrayList<Long> sortedTriggers = new ArrayList<Long>();
         for (int x = 0; x < triggers.size(); x++) {
+            sortedTriggers.add(Long.parseLong(triggers.get(x)));
+        }
+        /* sort all triggers */
+        if (sortedTriggers.size() != 0) {
+            Collections.sort(sortedTriggers);
+            Collections.reverse(sortedTriggers);
+        }
+
+
+        for (int x = 0; x < sortedTriggers.size(); x++) {
             logTv = new TextView(this);
             logTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             logTv.setLayoutParams(rlp);
-            cal.setTimeInMillis(Long.parseLong(triggers.get(x)));
+            cal.setTimeInMillis(sortedTriggers.get(x));
             logTv.setText(date.format(cal.getTime()));
             logRow = new TableRow(this);
             logRow.setLayoutParams(tlp);

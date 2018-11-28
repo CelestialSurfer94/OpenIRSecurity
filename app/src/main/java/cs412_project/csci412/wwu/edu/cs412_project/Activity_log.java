@@ -105,6 +105,7 @@ public class Activity_log extends AppCompatActivity {
         /* sort all triggers */
         if (allDevicesDates.size() != 0) {
             Collections.sort(allDevicesDates);
+            Collections.reverse(allDevicesDates);
         }
 
         for (int x = 0; x < allDevicesDates.size(); x++) {
