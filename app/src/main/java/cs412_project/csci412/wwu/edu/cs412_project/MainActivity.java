@@ -243,4 +243,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        autoUpdate.cancel();
+    }
 }
