@@ -38,11 +38,11 @@ public class MainActivity extends AppCompatActivity {
         //Authentication stuff
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser == null){
+        if (currentUser == null) {
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
-            startActivityForResult(i,0);
+            startActivityForResult(i, 0);
         } else {
-           // Toast.makeText(this,currentUser.getEmail() +"\n" +currentUser.getUid(), Toast.LENGTH_LONG).show();
+            // Toast.makeText(this,currentUser.getEmail() +"\n" +currentUser.getUid(), Toast.LENGTH_LONG).show();
             user = new User(currentUser.getUid(), currentUser.getEmail());
             dbm = DatabaseManager.getInstance();
             dbm.setCurrentUser(user);
@@ -79,21 +79,21 @@ public class MainActivity extends AppCompatActivity {
         addsensor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,Activity_AddSensor.class));
+                startActivity(new Intent(MainActivity.this, Activity_AddSensor.class));
             }
         });
         Button viewall = findViewById(R.id.viewallbutton);
         viewall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,Activity_log.class));
+                startActivity(new Intent(MainActivity.this, Activity_log.class));
             }
         });
     }
 
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
     }
@@ -101,10 +101,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateView() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
-       // Toast.makeText(this, "update VIEW", Toast.LENGTH_SHORT).show();
-        if(currentUser == null) {
+        // Toast.makeText(this, "update VIEW", Toast.LENGTH_SHORT).show();
+        if (currentUser == null) {
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
-           // startActivityForResult(i,0);
+            // startActivityForResult(i,0);
         } else {
             TableLayout sensors = findViewById(R.id.tableLayout2);
             TableLayout alerts = findViewById(R.id.tableLayout);
@@ -143,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
 //            Log.w("trig", "trig");
 
 
-
             ArrayList<String> triggers;
             //sensorTv.clearComposingText();
             int maxTriggers = 4;
@@ -163,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         TextView tv = (TextView) view;
                         String deviceName = tv.getText().toString();
-                        Intent intent = new Intent(MainActivity.this,Sensor_Activity.class);
+                        Intent intent = new Intent(MainActivity.this, Sensor_Activity.class);
                         intent.putExtra("devicename", deviceName);
                         startActivity(intent);
                     }
@@ -199,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
             TextView userText = findViewById(R.id.userEmailText);
             userText.setText(user.getEmail());
         }
-       // alerts.addView(row,tlp);
+        // alerts.addView(row,tlp);
     }
 
     @Override
@@ -212,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
         autoUpdate.schedule(new TimerTask() {
             @Override
             public void run() {
-                if(stopUpdatingView){ //kill current thread
+                if (stopUpdatingView) { //kill current thread
                     return;
                 }
                 runOnUiThread(new Runnable() {
@@ -229,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (requestCode) {
             case 0: //login activity, create user activity
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 user = new User(currentUser.getUid(), currentUser.getEmail());

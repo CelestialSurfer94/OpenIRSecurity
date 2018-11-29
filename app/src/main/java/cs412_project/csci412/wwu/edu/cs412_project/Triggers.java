@@ -6,18 +6,20 @@ public class Triggers {
     private ArrayList<String> triggers;
     private String deviceName;
 
-    public Triggers(String deviceName){
+    public Triggers(String deviceName) {
         this.deviceName = deviceName;
         triggers = new ArrayList<>();
     }
-    public void setTriggers(ArrayList<String> triggers){
+
+    public void setTriggers(ArrayList<String> triggers) {
         this.triggers = triggers;
     }
-    public ArrayList<String> getTriggers(){
+
+    public ArrayList<String> getTriggers() {
         return triggers;
     }
 
-    public String getName(){
+    public String getName() {
         return deviceName;
     }
 

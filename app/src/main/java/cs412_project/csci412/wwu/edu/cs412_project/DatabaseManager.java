@@ -24,7 +24,8 @@ public class DatabaseManager {
     private User user;
     private static DatabaseManager instance;
     private ArrayList<Device> devices;
-    private ArrayList<String> triggers;
+    private ArrayList<Triggers> triggers;
+    private ArrayList<String> tempTriggers;
 
     public static DatabaseManager getInstance() {
         if (instance == null)
@@ -36,6 +37,7 @@ public class DatabaseManager {
         db = FirebaseDatabase.getInstance();
         devices = new ArrayList<>();
         triggers = new ArrayList<>();
+        tempTriggers = new ArrayList<>();
     }
 
     public void setCurrentUser(User user) {
@@ -78,7 +80,7 @@ public class DatabaseManager {
         ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                String deviceName = (String)dataSnapshot.getValue();
+                String deviceName = (String) dataSnapshot.getValue();
             }
 
             @Override
@@ -114,6 +116,7 @@ public class DatabaseManager {
         DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + device.getName() + "/triggerEvents");
         ref.child(trig).setValue(trig);
     }
+
     public void addTimestamp(Device device) {
         DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + device.getName() + "/triggerEvents");
         ref.child("Timestamp").setValue(ServerValue.TIMESTAMP);
@@ -138,7 +141,7 @@ public class DatabaseManager {
                 DataSnapshot newData = dataSnapshot;
                 Iterable<DataSnapshot> deviceList = newData.getChildren();
                 devices.clear();
-                for (DataSnapshot data: deviceList) {
+                for (DataSnapshot data : deviceList) {
                     String devKey = data.getKey().toString();
                     Log.d("DEBUG", devKey);
                     Device d = new Device(devKey);
@@ -156,7 +159,7 @@ public class DatabaseManager {
         //DataSnapshot dataSnapshot = new DataSnapshot();
         //System.out.println(ref.);
         //ref.orderByChild().GetValueAsync();
-       // DataSnapshot dataSnapshot =
+        // DataSnapshot dataSnapshot =
         //        String
         //System.out.println(ref.orderByChild("deviceName").GetValueAsync());
         //TODO figure out whether or not it is better to use firebase listener
@@ -178,7 +181,7 @@ public class DatabaseManager {
 
                 /* clear triggers that are corresponding device name */
                 while (index < triggers.size()) {
-                    if (triggers.get(index).getName().equals(currentDevice)){
+                    if (triggers.get(index).getName().equals(currentDevice)) {
                         triggers.get(index).getTriggers().clear();
                         break;
                     }
@@ -186,7 +189,7 @@ public class DatabaseManager {
                 }
 
                 tempTriggers.clear();
-                for (DataSnapshot data: trigList) {
+                for (DataSnapshot data : trigList) {
                     String devKey = data.getValue().toString();
                     Log.d("DEBUGTrig", devKey);
                     tempTriggers.add(devKey);
@@ -195,8 +198,7 @@ public class DatabaseManager {
                 /* there is a list of triggers for the specific device */
                 if (triggers.size() > 0 && triggers.get(index).getTriggers() != null) {
                     triggers.get(index).setTriggers(tempTriggers);
-                }
-                else {
+                } else {
                     Triggers t = new Triggers(currentDevice);
                     t.setTriggers(tempTriggers);
                     triggers.add(t);
@@ -221,18 +223,19 @@ public class DatabaseManager {
 
             }
         });
-        for (int i = 0; i < triggers.size(); i++){
-            if (triggers.get(i).getName().equals(device.getName())){
+        for (int i = 0; i < triggers.size(); i++) {
+            if (triggers.get(i).getName().equals(device.getName())) {
                 return triggers.get(i).getTriggers();
             }
         }
         return null;
     }
-    public ArrayList<Triggers> getAllTriggers(){
+
+    public ArrayList<Triggers> getAllTriggers() {
         return triggers;
     }
 
-    private void addDevice(String device){
+    private void addDevice(String device) {
         Device d = new Device(device);
         //todo:
         //store devices to sqllite server or sharedprefs?
@@ -240,7 +243,7 @@ public class DatabaseManager {
         //same idea with the device triggers.
     }
 
-    public void addDeviceToArray(ArrayList<Device> devices, Device d){
+    public void addDeviceToArray(ArrayList<Device> devices, Device d) {
         devices.add(d);
     }
 

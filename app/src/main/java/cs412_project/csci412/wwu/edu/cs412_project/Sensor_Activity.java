@@ -27,6 +27,7 @@ public class Sensor_Activity extends AppCompatActivity {
     private String deviceName;
     private TextView devicetv;
     private boolean stopUpdatingView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +39,7 @@ public class Sensor_Activity extends AppCompatActivity {
 
         /* find device by the String device name */
         for (int i = 0; i < dbm.getDevices().size(); i++) {
-           // Log.w("tester",dbm.getUser().getDevices().get(i).getName());
+            // Log.w("tester",dbm.getUser().getDevices().get(i).getName());
             if (dbm.getDevices().get(i).getName().equals(deviceName)) {
                 device = dbm.getDevices().get(i);
             }
@@ -48,8 +49,9 @@ public class Sensor_Activity extends AppCompatActivity {
         }
         updateView();
     }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         TableLayout alerts = (TableLayout) findViewById(R.id.tableLayout);
         alerts.removeAllViews();
@@ -58,7 +60,7 @@ public class Sensor_Activity extends AppCompatActivity {
         autoUpdate.schedule(new TimerTask() {
             @Override
             public void run() {
-                if(stopUpdatingView){
+                if (stopUpdatingView) {
                     return;
                 }
                 runOnUiThread(new Runnable() {
@@ -73,7 +75,7 @@ public class Sensor_Activity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         TableLayout alerts = (TableLayout) findViewById(R.id.tableLayout);
         alerts.invalidate();

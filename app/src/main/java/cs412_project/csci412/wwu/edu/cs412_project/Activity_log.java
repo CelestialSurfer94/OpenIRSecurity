@@ -24,6 +24,7 @@ import java.util.TimerTask;
 public class Activity_log extends AppCompatActivity {
     private Timer autoUpdate;
     private DatabaseManager dbm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +36,9 @@ public class Activity_log extends AppCompatActivity {
         filter_menu.setAdapter(adapter);
         addLog();
     }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         autoUpdate = new Timer();
         autoUpdate.schedule(new TimerTask() {
@@ -52,7 +54,8 @@ public class Activity_log extends AppCompatActivity {
             }
         }, 500, 10000);
     }
-    public void addLog(){
+
+    public void addLog() {
         ArrayList<Device> devices = dbm.getDevices();
         TableLayout alerts = findViewById(R.id.tableLayout);
         TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
@@ -72,7 +75,7 @@ public class Activity_log extends AppCompatActivity {
 //        for (int i = 0; i < devices.size();i++){
 //            dbm.getTriggers(devices.get(i));
 //        }
-        if (devices.size()>0){
+        if (devices.size() > 0) {
             dbm.getTriggers(devices.get(0));
         }
 
@@ -83,7 +86,7 @@ public class Activity_log extends AppCompatActivity {
                 triggers.add(triggersTemp.get(y).getTriggers().get(z));
             }
         }
-        Log.w("ahhhh3",triggers.toString());
+        Log.w("ahhhh3", triggers.toString());
         /* convert timestamp to long*/
         for (int x = 0; x < triggers.size(); x++) {
             allDevicesDates.add(Long.parseLong(triggers.get(x)));
