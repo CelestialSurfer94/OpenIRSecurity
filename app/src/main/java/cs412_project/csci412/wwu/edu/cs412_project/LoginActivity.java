@@ -125,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
+        //DO NOT REMOVE, PREVENTS BACK BUTTON DURING LOGIN ACTIVITY
     }
 
     @Override

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
             startActivityForResult(i,0);
         } else {
-           // Toast.makeText(this,currentUser.getEmail() +"\n" +currentUser.getUid(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this,currentUser.getEmail() +"\n" +currentUser.getUid(), Toast.LENGTH_LONG).show();
             user = new User(currentUser.getUid(), currentUser.getEmail());
             dbm = DatabaseManager.getInstance();
             dbm.setCurrentUser(user);
@@ -223,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-        }, 1200, 5000);
+        }, 1500, 5000);
     }
 
     @Override
@@ -245,5 +247,22 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         autoUpdate.cancel(); //cancels all future threads, not current executing one
         stopUpdatingView = true; // flag that allows current thread to exit
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+            case R.id.user_logout:
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                startActivityForResult(i,0);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
