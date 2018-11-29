@@ -178,41 +178,50 @@ public class MainActivity extends AppCompatActivity {
 
             /* update view of triggers */
             alerts.removeAllViews();
-            ArrayList<String> triggers = new ArrayList<>();
             ArrayList<Long> allDevicesDates = new ArrayList<>();
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat date = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
 
-            ArrayList<Triggers> triggersTemp = dbm.getAllTriggers();
-            for (int y = 0; y < triggersTemp.size(); y++) {
-                for (int z = 0; z < triggersTemp.get(y).getTriggers().size(); z++) {
-                    //triggerDevices.add(triggersTemp.get(y).getName());
-                    triggers.add(triggersTemp.get(y).getTriggers().get(z));
-                }
-            }
-            Log.w("ahhhh3", triggers.toString());
-        /* convert timestamp to long*/
-            for (int x = 0; x < triggers.size(); x++) {
-                allDevicesDates.add(Long.parseLong(triggers.get(x)));
+            ArrayList<Triggers> triggers = dbm.getAllTriggers();
+            for (int y = 0; y < triggers.size(); y++) {
+                allDevicesDates.clear();
+
+                    /* get triggers of specific device if there is any*/
+                    if (triggers.get(y).getTriggers().size() > 0) {
+                        logTv = new TextView(this);
+                        logTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                        logTv.setLayoutParams(rlp);
+                        logTv.setText(triggers.get(y).getName() + ":");
+                        logRow = new TableRow(this);
+                        logRow.setLayoutParams(tlp);
+                        logRow.addView(logTv);
+                        alerts.addView(logRow, tlp);
+                    }
+                    Collections.reverse(triggers.get(y).getTriggers());
+                    for (int z = 0; z < triggers.get(y).getTriggers().size() && z < 4; z++) {
+                        allDevicesDates.add(Long.parseLong(triggers.get(y).getTriggers().get(z)));
+                    }
+                    /* sort all triggers */
+                    if (allDevicesDates.size() != 0) {
+                        Collections.sort(allDevicesDates);
+                        Collections.reverse(allDevicesDates);
+                    }
+
+                    for (int x = 0; x < allDevicesDates.size(); x++) {
+                        logTv = new TextView(this);
+                        logTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                        logTv.setLayoutParams(rlp);
+                        cal.setTimeInMillis(allDevicesDates.get(x));
+                        logTv.setText("\t\t\t" + date.format(cal.getTime()));
+                        logRow = new TableRow(this);
+                        logRow.setLayoutParams(tlp);
+                        logRow.addView(logTv);
+                        alerts.addView(logRow, tlp);
+                    }
+
             }
 
-        /* sort all triggers */
-            if (allDevicesDates.size() != 0) {
-                Collections.sort(allDevicesDates);
-                Collections.reverse(allDevicesDates);
-            }
 
-            for (int x = 0; x < allDevicesDates.size(); x++) {
-                logTv = new TextView(this);
-                logTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-                logTv.setLayoutParams(rlp);
-                cal.setTimeInMillis(allDevicesDates.get(x));
-                logTv.setText(date.format(cal.getTime()));
-                logRow = new TableRow(this);
-                logRow.setLayoutParams(tlp);
-                logRow.addView(logTv);
-                alerts.addView(logRow, tlp);
-            }
 
 
 
@@ -249,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-        }, 1500, 5000);
+        }, 1500, 2000);
     }
 
     @Override
