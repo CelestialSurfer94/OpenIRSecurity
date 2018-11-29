@@ -25,7 +25,6 @@ public class DatabaseManager {
     private static DatabaseManager instance;
     private ArrayList<Device> devices;
     private ArrayList<Triggers> triggers;
-    private ArrayList<String> tempTriggers;
 
     public static DatabaseManager getInstance() {
         if (instance == null)
@@ -37,7 +36,7 @@ public class DatabaseManager {
         db = FirebaseDatabase.getInstance();
         devices = new ArrayList<>();
         triggers = new ArrayList<>();
-        tempTriggers = new ArrayList<>();
+//        tempTriggers = new ArrayList<>();
     }
 
     public void setCurrentUser(User user) {
@@ -168,15 +167,15 @@ public class DatabaseManager {
     }
 
     public ArrayList<String> getTriggers(Device device) {
-        final DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + device.getName() + "/triggerEvents");
+        DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + device.getName() + "/triggerEvents");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 DataSnapshot newData = dataSnapshot;
                 Iterable<DataSnapshot> trigList = newData.getChildren();
 
-
-                String currentDevice = ref.getParent().getKey();
+                String currentDevice = dataSnapshot.getRef().getParent().getKey();
+              //  String currentDevice = ref.getParent().getKey();
                 int index = 0;
 
                 /* clear triggers that are corresponding device name */
@@ -185,18 +184,25 @@ public class DatabaseManager {
                         triggers.get(index).getTriggers().clear();
                         break;
                     }
-                    index++;
+                    else {
+                        index++;
+                    }
                 }
-
-                tempTriggers.clear();
+                ArrayList<String> tempTriggers = new ArrayList<>();
+              //  tempTriggers.clear();
                 for (DataSnapshot data : trigList) {
                     String devKey = data.getValue().toString();
                     Log.d("DEBUGTrig", devKey);
                     tempTriggers.add(devKey);
                 }
 
+                /* no triggers for specific device */
+//                if(dataSnapshot.getValue() == null){
+//                    Triggers t = new Triggers(currentDevice);
+//                    triggers.add(t);
+//                }
                 /* there is a list of triggers for the specific device */
-                if (triggers.size() > 0 && triggers.get(index).getTriggers() != null) {
+                if (triggers.size() > index && triggers.get(index).getTriggers() != null) {
                     triggers.get(index).setTriggers(tempTriggers);
                 } else {
                     Triggers t = new Triggers(currentDevice);
@@ -232,6 +238,9 @@ public class DatabaseManager {
     }
 
     public ArrayList<Triggers> getAllTriggers() {
+        for(Device d: devices){
+            getTriggers(d);
+        }
         return triggers;
     }
 

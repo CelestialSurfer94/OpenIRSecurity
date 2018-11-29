@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +18,10 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -114,9 +118,6 @@ public class MainActivity extends AppCompatActivity {
             TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
             TableRow.LayoutParams rlp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
 
-            //sensors.removeAllViews();
-
-            //alerts.removeAllViews();
 
             String test = "asdfasdfasdfasfd";
             TextView sensorTv, logTv;
@@ -124,30 +125,8 @@ public class MainActivity extends AppCompatActivity {
 
             //Query List of Devices
             ArrayList<Device> devices = dbm.getDevices();
-            //ArrayList<Device> devices = user.getDevices();
 
-            /* test */
-//            if (devices.size() != 0) {
-//
-//////                for (int i = 0; i < 8; i++) {
-//////                    dbm.addTrigger("trigger1-"+i, devices.get(i));
-//////                    dbm.addTrigger("tr2-"+i, devices.get(i));
-//////                    dbm.addTrigger("tr3-"+i, devices.get(i));
-//////                    dbm.addTrigger("asdfasdf-"+i, devices.get(i));
-//////                }
-//                for (int i = 0; i < 8; i++) {
-//                    dbm.addTimestamp(devices.get(i));
-//                    dbm.addTimestamp(devices.get(i));
-//                    dbm.addTimestamp(devices.get(i));
-//                    dbm.addTimestamp(devices.get(i));
-//                }
-//            }
-//            Log.w("trig", "trig");
-
-
-            ArrayList<String> triggers;
-            //sensorTv.clearComposingText();
-            int maxTriggers = 4;
+            //ArrayList<String> triggers;
             sensors.removeAllViews();
             int numDevices = devices.size();
             for (int x = 0; x < numDevices; x++) {
@@ -196,6 +175,52 @@ public class MainActivity extends AppCompatActivity {
 //                    alerts.addView(logRow, tlp);
 //                }
 //            }
+
+            /* update view of triggers */
+            alerts.removeAllViews();
+            ArrayList<String> triggers = new ArrayList<>();
+            ArrayList<Long> allDevicesDates = new ArrayList<>();
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat date = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+
+            ArrayList<Triggers> triggersTemp = dbm.getAllTriggers();
+            for (int y = 0; y < triggersTemp.size(); y++) {
+                for (int z = 0; z < triggersTemp.get(y).getTriggers().size(); z++) {
+                    //triggerDevices.add(triggersTemp.get(y).getName());
+                    triggers.add(triggersTemp.get(y).getTriggers().get(z));
+                }
+            }
+            Log.w("ahhhh3", triggers.toString());
+        /* convert timestamp to long*/
+            for (int x = 0; x < triggers.size(); x++) {
+                allDevicesDates.add(Long.parseLong(triggers.get(x)));
+            }
+
+        /* sort all triggers */
+            if (allDevicesDates.size() != 0) {
+                Collections.sort(allDevicesDates);
+                Collections.reverse(allDevicesDates);
+            }
+
+            for (int x = 0; x < allDevicesDates.size(); x++) {
+                logTv = new TextView(this);
+                logTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                logTv.setLayoutParams(rlp);
+                cal.setTimeInMillis(allDevicesDates.get(x));
+                logTv.setText(date.format(cal.getTime()));
+                logRow = new TableRow(this);
+                logRow.setLayoutParams(tlp);
+                logRow.addView(logTv);
+                alerts.addView(logRow, tlp);
+            }
+
+
+
+
+
+
+
+
 
             TextView userText = findViewById(R.id.userEmailText);
             userText.setText(user.getEmail());

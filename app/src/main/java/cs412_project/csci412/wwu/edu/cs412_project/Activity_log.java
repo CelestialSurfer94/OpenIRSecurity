@@ -30,10 +30,6 @@ public class Activity_log extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log);
         dbm = DatabaseManager.getInstance();
-        Spinner filter_menu = (Spinner) findViewById(R.id.filter_menu);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.filter_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        filter_menu.setAdapter(adapter);
         addLog();
     }
 
@@ -68,16 +64,8 @@ public class Activity_log extends AppCompatActivity {
         /* update view of triggers */
         alerts.removeAllViews();
         ArrayList<String> triggers = new ArrayList<>();
-        //  ArrayList<String> triggerDevices = new ArrayList<>();
+        //ArrayList<String> triggerDevices = new ArrayList<>();
         ArrayList<Long> allDevicesDates = new ArrayList<>();
-
-        /* grab every trigger from every device */
-//        for (int i = 0; i < devices.size();i++){
-//            dbm.getTriggers(devices.get(i));
-//        }
-        if (devices.size() > 0) {
-            dbm.getTriggers(devices.get(0));
-        }
 
         ArrayList<Triggers> triggersTemp = dbm.getAllTriggers();
         for (int y = 0; y < triggersTemp.size(); y++) {
