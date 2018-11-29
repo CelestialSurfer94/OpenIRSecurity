@@ -165,18 +165,55 @@ public class DatabaseManager {
     }
 
     public ArrayList<String> getTriggers(Device device) {
-        DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + device.getName() + "/triggerEvents");
+        final DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + device.getName() + "/triggerEvents");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 DataSnapshot newData = dataSnapshot;
                 Iterable<DataSnapshot> trigList = newData.getChildren();
-                triggers.clear();
+
+
+                String currentDevice = ref.getParent().getKey();
+                int index = 0;
+
+                /* clear triggers that are corresponding device name */
+                while (index < triggers.size()) {
+                    if (triggers.get(index).getName().equals(currentDevice)){
+                        triggers.get(index).getTriggers().clear();
+                        break;
+                    }
+                    index++;
+                }
+
+                tempTriggers.clear();
                 for (DataSnapshot data: trigList) {
                     String devKey = data.getValue().toString();
                     Log.d("DEBUGTrig", devKey);
-                    triggers.add(devKey);
+                    tempTriggers.add(devKey);
                 }
+
+                /* there is a list of triggers for the specific device */
+                if (triggers.size() > 0 && triggers.get(index).getTriggers() != null) {
+                    triggers.get(index).setTriggers(tempTriggers);
+                }
+                else {
+                    Triggers t = new Triggers(currentDevice);
+                    t.setTriggers(tempTriggers);
+                    triggers.add(t);
+                }
+                //maybe clear here also
+                //  String currentDevice = ref.getParent().getKey();
+                // Log.w("ahhhhh",currentDevice);
+                /* find device associated with triggers */
+//                for (int i = 0; i < devices.size(); i++){
+//                    if (devices.get(i).getName().equals(currentDevice)) {
+//                        devices.get(i).setTriggers(triggers);
+//                        Log.w("ahhhhh2",devices.get(i).getTriggers().toString());
+//                        break;
+//                    }
+//                }
+
+                // devices.get(devices.indexOf(currentDevice)).setTriggers(triggers);
             }
 
             @Override
@@ -184,6 +221,14 @@ public class DatabaseManager {
 
             }
         });
+        for (int i = 0; i < triggers.size(); i++){
+            if (triggers.get(i).getName().equals(device.getName())){
+                return triggers.get(i).getTriggers();
+            }
+        }
+        return null;
+    }
+    public ArrayList<Triggers> getAllTriggers(){
         return triggers;
     }
 
