@@ -26,6 +26,7 @@ public class Sensor_Activity extends AppCompatActivity {
     private Timer autoUpdate;
     private String deviceName;
     private TextView devicetv;
+    private boolean stopUpdatingView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +34,7 @@ public class Sensor_Activity extends AppCompatActivity {
         deviceName = getIntent().getStringExtra("devicename");
         devicetv = findViewById(R.id.text_view_id);
         dbm = DatabaseManager.getInstance();
+        stopUpdatingView = false;
 
         /* find device by the String device name */
         for (int i = 0; i < dbm.getDevices().size(); i++) {
@@ -51,11 +53,14 @@ public class Sensor_Activity extends AppCompatActivity {
         super.onResume();
         TableLayout alerts = (TableLayout) findViewById(R.id.tableLayout);
         alerts.removeAllViews();
-
+        stopUpdatingView = false;
         autoUpdate = new Timer();
         autoUpdate.schedule(new TimerTask() {
             @Override
             public void run() {
+                if(stopUpdatingView){
+                    return;
+                }
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -64,7 +69,7 @@ public class Sensor_Activity extends AppCompatActivity {
                     }
                 });
             }
-        }, 200, 10000);
+        }, 600, 5000);
     }
 
     @Override
@@ -73,13 +78,14 @@ public class Sensor_Activity extends AppCompatActivity {
         TableLayout alerts = (TableLayout) findViewById(R.id.tableLayout);
         alerts.invalidate();
         autoUpdate.cancel();
+        stopUpdatingView = true;
     }
 
     /* ERROR: updates slowly and shows the last one before updating ===============================*/
     public void updateView() {
 
         ArrayList<String> triggers = dbm.getTriggers(device);
-        Toast.makeText(this, device.getName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, device.getName() + triggers.size(), Toast.LENGTH_SHORT).show();
         TableLayout alerts = findViewById(R.id.tableLayout);
         TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
         TableRow.LayoutParams rlp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);

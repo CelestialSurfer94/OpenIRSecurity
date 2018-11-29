@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
             startActivityForResult(i,0);
         } else {
-            Toast.makeText(this,currentUser.getEmail() +"\n" +currentUser.getUid(), Toast.LENGTH_LONG).show();
+           // Toast.makeText(this,currentUser.getEmail() +"\n" +currentUser.getUid(), Toast.LENGTH_LONG).show();
             user = new User(currentUser.getUid(), currentUser.getEmail());
             dbm = DatabaseManager.getInstance();
             dbm.setCurrentUser(user);
@@ -71,22 +71,7 @@ public class MainActivity extends AppCompatActivity {
             dbm.setCurrentUser(user);
             */
 
-            autoUpdate = new Timer();
-            autoUpdate.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    if(stopUpdatingView){
-                        return;
-                    }
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            updateView();
-                            //Toast.makeText(MainActivity.this, "refreshed main activity view", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-            }, 1200, 5000); //TODO why 1200 delay ? also consider consts.
+
         }
 
         /* button functionality */
@@ -116,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateView() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
+       // Toast.makeText(this, "update VIEW", Toast.LENGTH_SHORT).show();
         if(currentUser == null) {
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
            // startActivityForResult(i,0);
@@ -219,11 +205,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
 
     protected void onResume() {
-
         super.onResume();
         stopUpdatingView = false;
         updateView();
-        autoUpdate = new Timer(); //TODO : is necessary with new declaration in onCreate?
+        autoUpdate = new Timer();
         autoUpdate.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -238,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-        }, 500, 10000);
+        }, 1200, 5000);
     }
 
     @Override
