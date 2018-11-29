@@ -53,27 +53,6 @@ public class Activity_log extends AppCompatActivity {
         }, 500, 10000);
     }
     public void addLog(){
-//        TextView tv = new TextView(this);
-//        tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-//                TableRow.LayoutParams.WRAP_CONTENT));
-//        tv.setText("asdfasdf");
-//
-//        TableRow tr = new TableRow(this);
-//
-//        TableLayout.LayoutParams trParams = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
-//                TableLayout.LayoutParams.WRAP_CONTENT);
-//
-//        tr.setLayoutParams(trParams);
-//
-//
-//        tr.addView(tv);
-//
-//        TableLayout mTableLayout = (TableLayout) findViewById(R.id.tableLayout);
-//        mTableLayout.addView(tr, trParams);
-
-        /*new stuff here*/
-
-
         ArrayList<Device> devices = dbm.getDevices();
         TableLayout alerts = findViewById(R.id.tableLayout);
         TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
@@ -85,18 +64,26 @@ public class Activity_log extends AppCompatActivity {
 
         /* update view of triggers */
         alerts.removeAllViews();
-        ArrayList<String> triggers = new ArrayList<String>();
-        ArrayList<Long> allDevicesDates = new ArrayList<Long>();
+        ArrayList<String> triggers = new ArrayList<>();
+        //  ArrayList<String> triggerDevices = new ArrayList<>();
+        ArrayList<Long> allDevicesDates = new ArrayList<>();
 
         /* grab every trigger from every device */
-        for (int x = 0; x < devices.size(); x++) {
-            ArrayList<String> triggersTemp = dbm.getTriggers(devices.get(x));
-            Log.w("trigs", triggersTemp.toString());
-            for (int y = 0; y < triggersTemp.size(); y++) {
-                triggers.add(triggersTemp.get(y));
-            }
+//        for (int i = 0; i < devices.size();i++){
+//            dbm.getTriggers(devices.get(i));
+//        }
+        if (devices.size()>0){
+            dbm.getTriggers(devices.get(0));
         }
 
+        ArrayList<Triggers> triggersTemp = dbm.getAllTriggers();
+        for (int y = 0; y < triggersTemp.size(); y++) {
+            for (int z = 0; z < triggersTemp.get(y).getTriggers().size(); z++) {
+                //triggerDevices.add(triggersTemp.get(y).getName());
+                triggers.add(triggersTemp.get(y).getTriggers().get(z));
+            }
+        }
+        Log.w("ahhhh3",triggers.toString());
         /* convert timestamp to long*/
         for (int x = 0; x < triggers.size(); x++) {
             allDevicesDates.add(Long.parseLong(triggers.get(x)));
