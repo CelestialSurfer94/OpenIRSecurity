@@ -79,7 +79,7 @@ public class Sensor_Activity extends AppCompatActivity {
     public void updateView() {
 
         ArrayList<String> triggers = dbm.getTriggers(device);
-        Toast.makeText(this, device.getName(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, device.getName(), Toast.LENGTH_SHORT).show();
         TableLayout alerts = findViewById(R.id.tableLayout);
         TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
         TableRow.LayoutParams rlp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);

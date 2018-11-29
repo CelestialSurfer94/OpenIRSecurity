@@ -1,19 +1,12 @@
 package cs412_project.csci412.wwu.edu.cs412_project;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -21,12 +14,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -35,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private User user;
     private FirebaseAuth mAuth;
     private Timer autoUpdate;
+    private boolean stopUpdatingView;
 
     //private User;
     @Override
@@ -43,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        stopUpdatingView = false;
 
         //Authentication stuff
         mAuth = FirebaseAuth.getInstance();
@@ -79,7 +70,23 @@ public class MainActivity extends AppCompatActivity {
             user.addDevices(d2);
             dbm.setCurrentUser(user);
             */
-            updateView();
+
+            autoUpdate = new Timer();
+            autoUpdate.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if(stopUpdatingView){
+                        return;
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateView();
+                            //Toast.makeText(MainActivity.this, "refreshed main activity view", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }, 1200, 5000); //TODO why 1200 delay ? also consider consts.
         }
 
         /* button functionality */
@@ -214,11 +221,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
 
         super.onResume();
+        stopUpdatingView = false;
         updateView();
-        autoUpdate = new Timer();
+        autoUpdate = new Timer(); //TODO : is necessary with new declaration in onCreate?
         autoUpdate.schedule(new TimerTask() {
             @Override
             public void run() {
+                if(stopUpdatingView){ //kill current thread
+                    return;
+                }
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -247,6 +258,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        autoUpdate.cancel();
+        autoUpdate.cancel(); //cancels all future threads, not current executing one
+        stopUpdatingView = true; // flag that allows current thread to exit
     }
 }
