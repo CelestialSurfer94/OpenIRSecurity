@@ -43,28 +43,39 @@
             android:text="Sensor_Name"
             android:textSize="24sp" />
 
+        <TextView
+            android:id="@+id/is_armed_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/recent_alerts_tv"
+            android:layout_alignStart="@+id/recent_alerts_tv"
+            android:layout_below="@+id/text_view_id"
+            android:text="Is Armed: "
+            android:textSize="18sp" />
+
         <Button
             android:id="@+id/armed_button"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/disarmed_button"
-            android:layout_marginEnd="-120dp"
-            android:layout_marginRight="-120dp"
-            android:layout_toStartOf="@+id/disarmed_button"
-            android:layout_toLeftOf="@+id/disarmed_button"
-            android:text="Armed" />
+            android:layout_alignBaseline="@+id/disarmed_button"
+            android:layout_alignBottom="@+id/disarmed_button"
+            android:layout_alignLeft="@+id/is_armed_tv"
+            android:layout_alignStart="@+id/is_armed_tv"
+            android:layout_marginLeft="18dp"
+            android:layout_marginStart="18dp"
+            android:text="Arm" />
 
         <Button
             android:id="@+id/disarmed_button"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/text_view_id"
-            android:layout_alignLeft="@+id/text_view_id"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="179dp"
-            android:layout_marginLeft="179dp"
-            android:layout_marginTop="89dp"
-            android:text="Disarmed" />
+            android:layout_alignEnd="@+id/sensorscroll"
+            android:layout_alignRight="@+id/sensorscroll"
+            android:layout_below="@+id/text_view_id"
+            android:layout_marginEnd="31dp"
+            android:layout_marginRight="31dp"
+            android:layout_marginTop="37dp"
+            android:text="Disarm" />
 
         <TextView
             android:id="@+id/recent_alerts_tv"

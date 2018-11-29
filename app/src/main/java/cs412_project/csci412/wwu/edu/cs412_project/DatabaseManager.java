@@ -131,6 +131,28 @@ public class DatabaseManager {
         ref.child(user.getId()).removeValue();
     }
 
+    public void isArmed(final Device d){
+        DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + d.getName() + "/isArmed");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean b = (boolean) dataSnapshot.getValue();
+                d.setArmed(b);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void setArmed(boolean Armed, Device d) {
+        DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + d.getName() + "/isArmed");
+        ref.setValue(Armed);
+        d.setArmed(Armed);
+    }
+
     // Retrieve all devices for a given user
     public ArrayList<Device> getDevices() {
         DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices");
@@ -144,6 +166,7 @@ public class DatabaseManager {
                     String devKey = data.getKey().toString();
                     Log.d("DEBUG", devKey);
                     Device d = new Device(devKey);
+                    getInstance().isArmed(d);
                     devices.add(d);
                     //DatabaseReference ref2 = db.getReference("users/" + user.getId() + "/devices/" + devKey + "isArmed");
                     //d.setArmed();

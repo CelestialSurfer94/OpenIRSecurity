@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -48,6 +49,24 @@ public class Sensor_Activity extends AppCompatActivity {
             devicetv.setText(device.getName());
         }
         updateView();
+
+        Button armedButton = findViewById(R.id.armed_button);
+        armedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //arm the device
+                dbm.setArmed(true,device);
+            }
+        });
+
+        Button disarmButton = findViewById(R.id.disarmed_button);
+        disarmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //disarm the device
+                dbm.setArmed(false, device);
+            }
+        });
     }
 
     @Override
@@ -86,11 +105,17 @@ public class Sensor_Activity extends AppCompatActivity {
     /* ERROR: updates slowly and shows the last one before updating ===============================*/
     public void updateView() {
 
+        //update True/False field in the text view
+        boolean armed = device.isArmed();
+        TextView armed_tv = findViewById(R.id.is_armed_tv);
+        String newText = "Is Armed: " + String.valueOf(armed);
+        armed_tv.setText(newText);
+
         /* find triggers for specific device */
         ArrayList<String> triggers = dbm.getTriggers(device);
 
         if (triggers != null) {
-            Toast.makeText(this, device.getName(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, device.getName(), Toast.LENGTH_LONG).show();
             TableLayout alerts = findViewById(R.id.tableLayout);
             TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
             TableRow.LayoutParams rlp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
