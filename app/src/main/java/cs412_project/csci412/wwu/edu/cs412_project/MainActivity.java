@@ -1,19 +1,12 @@
 package cs412_project.csci412.wwu.edu.cs412_project;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -21,12 +14,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -35,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private User user;
     private FirebaseAuth mAuth;
     private Timer autoUpdate;
+    private boolean stopUpdatingView;
 
     //private User;
     @Override
@@ -43,15 +33,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        stopUpdatingView = false;
 
         //Authentication stuff
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser == null){
+        if (currentUser == null) {
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
-            startActivityForResult(i,0);
+            startActivityForResult(i, 0);
         } else {
-            Toast.makeText(this,currentUser.getEmail() +"\n" +currentUser.getUid(), Toast.LENGTH_LONG).show();
+            // Toast.makeText(this,currentUser.getEmail() +"\n" +currentUser.getUid(), Toast.LENGTH_LONG).show();
             user = new User(currentUser.getUid(), currentUser.getEmail());
             dbm = DatabaseManager.getInstance();
             dbm.setCurrentUser(user);
@@ -79,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
             user.addDevices(d2);
             dbm.setCurrentUser(user);
             */
-            updateView();
+
+
         }
 
         /* button functionality */
@@ -87,21 +79,21 @@ public class MainActivity extends AppCompatActivity {
         addsensor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,Activity_AddSensor.class));
+                startActivity(new Intent(MainActivity.this, Activity_AddSensor.class));
             }
         });
         Button viewall = findViewById(R.id.viewallbutton);
         viewall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,Activity_log.class));
+                startActivity(new Intent(MainActivity.this, Activity_log.class));
             }
         });
     }
 
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
     }
@@ -109,9 +101,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateView() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser == null) {
+        // Toast.makeText(this, "update VIEW", Toast.LENGTH_SHORT).show();
+        if (currentUser == null) {
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
-           // startActivityForResult(i,0);
+            // startActivityForResult(i,0);
         } else {
             TableLayout sensors = findViewById(R.id.tableLayout2);
             TableLayout alerts = findViewById(R.id.tableLayout);
@@ -132,24 +125,22 @@ public class MainActivity extends AppCompatActivity {
             //ArrayList<Device> devices = user.getDevices();
 
             /* test */
-            if (devices.size() != 0) {
-
-////                for (int i = 0; i < 8; i++) {
-////                    dbm.addTrigger("trigger1-"+i, devices.get(i));
-////                    dbm.addTrigger("tr2-"+i, devices.get(i));
-////                    dbm.addTrigger("tr3-"+i, devices.get(i));
-////                    dbm.addTrigger("asdfasdf-"+i, devices.get(i));
-////                }
-                for (int i = 0; i < 8; i++) {
-                    dbm.addTimestamp(devices.get(i));
-                    dbm.addTimestamp(devices.get(i));
-                    dbm.addTimestamp(devices.get(i));
-                    dbm.addTimestamp(devices.get(i));
-                }
-            }
+//            if (devices.size() != 0) {
+//
+//////                for (int i = 0; i < 8; i++) {
+//////                    dbm.addTrigger("trigger1-"+i, devices.get(i));
+//////                    dbm.addTrigger("tr2-"+i, devices.get(i));
+//////                    dbm.addTrigger("tr3-"+i, devices.get(i));
+//////                    dbm.addTrigger("asdfasdf-"+i, devices.get(i));
+//////                }
+//                for (int i = 0; i < 8; i++) {
+//                    dbm.addTimestamp(devices.get(i));
+//                    dbm.addTimestamp(devices.get(i));
+//                    dbm.addTimestamp(devices.get(i));
+//                    dbm.addTimestamp(devices.get(i));
+//                }
+//            }
 //            Log.w("trig", "trig");
-
-
 
 
             ArrayList<String> triggers;
@@ -163,11 +154,15 @@ public class MainActivity extends AppCompatActivity {
                 sensorTv.setLayoutParams(rlp);
 
                 sensorTv.setText(devices.get(x).getName());
-                final String deviceName = devices.get(x).getName();
+
+                //final String deviceName = devices.get(x).getName();
+
                 sensorTv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(MainActivity.this,Sensor_Activity.class);
+                        TextView tv = (TextView) view;
+                        String deviceName = tv.getText().toString();
+                        Intent intent = new Intent(MainActivity.this, Sensor_Activity.class);
                         intent.putExtra("devicename", deviceName);
                         startActivity(intent);
                     }
@@ -203,19 +198,22 @@ public class MainActivity extends AppCompatActivity {
             TextView userText = findViewById(R.id.userEmailText);
             userText.setText(user.getEmail());
         }
-       // alerts.addView(row,tlp);
+        // alerts.addView(row,tlp);
     }
 
     @Override
 
     protected void onResume() {
-
         super.onResume();
+        stopUpdatingView = false;
         updateView();
         autoUpdate = new Timer();
         autoUpdate.schedule(new TimerTask() {
             @Override
             public void run() {
+                if (stopUpdatingView) { //kill current thread
+                    return;
+                }
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -224,13 +222,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-        }, 500, 10000);
+        }, 1200, 5000);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (requestCode) {
             case 0: //login activity, create user activity
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 user = new User(currentUser.getUid(), currentUser.getEmail());
@@ -239,5 +237,12 @@ public class MainActivity extends AppCompatActivity {
                 updateView();
                 break;
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        autoUpdate.cancel(); //cancels all future threads, not current executing one
+        stopUpdatingView = true; // flag that allows current thread to exit
     }
 }

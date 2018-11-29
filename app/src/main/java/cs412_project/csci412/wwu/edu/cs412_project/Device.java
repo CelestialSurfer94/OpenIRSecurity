@@ -35,9 +35,10 @@ public class Device {
     public void setTriggers(ArrayList<String> triggers) {
         this.triggers = triggers;
     }
+
     /* adds trigger to front (most recent) */
     public void addTrigger(String trigger) {
-        this.triggers.add(0,trigger);
+        this.triggers.add(0, trigger);
     }
 
     /* would remove all occurences of the trigger (two triggers occuring at same time would be deleted */

@@ -1,5 +1,6 @@
 package cs412_project.csci412.wwu.edu.cs412_project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,7 @@ public class AddUserActivity extends AppCompatActivity {
     private Button createUserButton;
     private FirebaseAuth mAuth;
     private DatabaseManager dbm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,15 +40,18 @@ public class AddUserActivity extends AppCompatActivity {
         dbm = DatabaseManager.getInstance();
     }
 
-    public void createUser(View v){
+    public void createUser(View v) {
         String email = emailText.getText().toString();
         String pass0 = password0Text.getText().toString();
         String pass1 = password1Text.getText().toString();
 
-        if(!pass0.equals(pass1)){ //passwords do not match
-            Toast.makeText(this, "passwords do not match, try again", Toast.LENGTH_SHORT).show();
+        if (!pass0.equals(pass1)) { //passwords do not match
+            Toast.makeText(this, "Passwords do not match.", Toast.LENGTH_SHORT).show();
             password0Text.setText("");
             password1Text.setText("");
+        } else if (pass1.equals("")) { // user attempts to sign in with no password
+            Toast.makeText(this, "Password cannot be empty.", Toast.LENGTH_SHORT).show();
+
         } else {
             mAuth.createUserWithEmailAndPassword(email, pass0)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -58,7 +63,8 @@ public class AddUserActivity extends AppCompatActivity {
                                 User newUser = new User(user.getUid(), user.getEmail());
                                 dbm.setCurrentUser(newUser);
                                 dbm.createUser(newUser);
-                                finish();
+                                //open email activity
+                                sendUserEmailKey(user.getUid(), user.getEmail());
                             } else {
                                 // If sign in fails, display a message to the user.
                                 //TODO ADD BETTER ERROR HANDLING:
@@ -67,6 +73,29 @@ public class AddUserActivity extends AppCompatActivity {
                             }
                         }
                     });
+        }
+    }
+
+    private void sendUserEmailKey(String id, String email) {
+        Intent i = new Intent(AddUserActivity.this, EmailActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //pass email and id to intent with a bundle
+        Bundle b = new Bundle();
+        b.putString("id", id);
+        b.putString("email", email);
+        i.putExtras(b);
+        startActivityForResult(i, 1);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 1: //login activity, create user activity
+                Intent returnIntent = new Intent();
+                setResult(AddUserActivity.RESULT_OK, returnIntent);
+                finish();
         }
     }
 
