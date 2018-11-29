@@ -27,6 +27,7 @@ public class Sensor_Activity extends AppCompatActivity {
     private String deviceName;
     private TextView devicetv;
     private boolean stopUpdatingView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +39,7 @@ public class Sensor_Activity extends AppCompatActivity {
 
         /* find device by the String device name */
         for (int i = 0; i < dbm.getDevices().size(); i++) {
-           // Log.w("tester",dbm.getUser().getDevices().get(i).getName());
+            // Log.w("tester",dbm.getUser().getDevices().get(i).getName());
             if (dbm.getDevices().get(i).getName().equals(deviceName)) {
                 device = dbm.getDevices().get(i);
             }
@@ -48,8 +49,9 @@ public class Sensor_Activity extends AppCompatActivity {
         }
         updateView();
     }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         TableLayout alerts = (TableLayout) findViewById(R.id.tableLayout);
         alerts.removeAllViews();
@@ -58,7 +60,7 @@ public class Sensor_Activity extends AppCompatActivity {
         autoUpdate.schedule(new TimerTask() {
             @Override
             public void run() {
-                if(stopUpdatingView){
+                if (stopUpdatingView) {
                     return;
                 }
                 runOnUiThread(new Runnable() {
@@ -73,7 +75,7 @@ public class Sensor_Activity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         TableLayout alerts = (TableLayout) findViewById(R.id.tableLayout);
         alerts.invalidate();
@@ -84,42 +86,41 @@ public class Sensor_Activity extends AppCompatActivity {
     /* ERROR: updates slowly and shows the last one before updating ===============================*/
     public void updateView() {
 
+        /* find triggers for specific device */
         ArrayList<String> triggers = dbm.getTriggers(device);
-        Toast.makeText(this, device.getName() + triggers.size(), Toast.LENGTH_SHORT).show();
-        TableLayout alerts = findViewById(R.id.tableLayout);
-        TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
-        TableRow.LayoutParams rlp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-        TextView logTv;
-        TableRow logRow;
 
-        /* update view of triggers */
-        alerts.removeAllViews();
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat date = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+        if (triggers != null) {
+            Toast.makeText(this, device.getName(), Toast.LENGTH_LONG).show();
+            TableLayout alerts = findViewById(R.id.tableLayout);
+            TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
+            TableRow.LayoutParams rlp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+            TextView logTv;
+            TableRow logRow;
+            /* update view of triggers */
+            alerts.removeAllViews();
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat date = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
 
-        ArrayList<Long> sortedTriggers = new ArrayList<Long>();
-        for (int x = 0; x < triggers.size(); x++) {
-            sortedTriggers.add(Long.parseLong(triggers.get(x)));
+            ArrayList<Long> sortedTriggers = new ArrayList<Long>();
+            for (int x = 0; x < triggers.size(); x++) {
+                sortedTriggers.add(Long.parseLong(triggers.get(x)));
+            }
+            /* sort all triggers */
+            if (sortedTriggers.size() != 0) {
+                Collections.sort(sortedTriggers);
+                Collections.reverse(sortedTriggers);
+            }
+            for (int x = 0; x < sortedTriggers.size(); x++) {
+                logTv = new TextView(this);
+                logTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                logTv.setLayoutParams(rlp);
+                cal.setTimeInMillis(sortedTriggers.get(x));
+                logTv.setText(date.format(cal.getTime()));
+                logRow = new TableRow(this);
+                logRow.setLayoutParams(tlp);
+                logRow.addView(logTv);
+                alerts.addView(logRow, tlp);
+            }
         }
-        /* sort all triggers */
-        if (sortedTriggers.size() != 0) {
-            Collections.sort(sortedTriggers);
-            Collections.reverse(sortedTriggers);
-        }
-
-
-        for (int x = 0; x < sortedTriggers.size(); x++) {
-            logTv = new TextView(this);
-            logTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-            logTv.setLayoutParams(rlp);
-            cal.setTimeInMillis(sortedTriggers.get(x));
-            logTv.setText(date.format(cal.getTime()));
-            logRow = new TableRow(this);
-            logRow.setLayoutParams(tlp);
-            logRow.addView(logTv);
-            alerts.addView(logRow, tlp);
-        }
-
-
     }
 }

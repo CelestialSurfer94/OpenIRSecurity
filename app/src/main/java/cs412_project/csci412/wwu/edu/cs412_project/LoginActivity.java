@@ -91,13 +91,12 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    private void attemptLogin(){
+    private void attemptLogin() {
         String pass = mPasswordView.getText().toString();
         String email = mEmailView.getText().toString();
         if (pass.equals("")) {
             Toast.makeText(this, "Password cannot be empty", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
             mAuth.signInWithEmailAndPassword(email, pass)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -118,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void register(View v){
+    public void register(View v) {
         Intent i = new Intent(LoginActivity.this, AddUserActivity.class);
         startActivity(i);
     }

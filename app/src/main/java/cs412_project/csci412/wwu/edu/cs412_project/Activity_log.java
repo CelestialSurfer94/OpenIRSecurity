@@ -24,19 +24,17 @@ import java.util.TimerTask;
 public class Activity_log extends AppCompatActivity {
     private Timer autoUpdate;
     private DatabaseManager dbm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log);
         dbm = DatabaseManager.getInstance();
-        Spinner filter_menu = (Spinner) findViewById(R.id.filter_menu);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.filter_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        filter_menu.setAdapter(adapter);
         addLog();
     }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         autoUpdate = new Timer();
         autoUpdate.schedule(new TimerTask() {
@@ -52,28 +50,8 @@ public class Activity_log extends AppCompatActivity {
             }
         }, 500, 10000);
     }
-    public void addLog(){
-//        TextView tv = new TextView(this);
-//        tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-//                TableRow.LayoutParams.WRAP_CONTENT));
-//        tv.setText("asdfasdf");
-//
-//        TableRow tr = new TableRow(this);
-//
-//        TableLayout.LayoutParams trParams = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
-//                TableLayout.LayoutParams.WRAP_CONTENT);
-//
-//        tr.setLayoutParams(trParams);
-//
-//
-//        tr.addView(tv);
-//
-//        TableLayout mTableLayout = (TableLayout) findViewById(R.id.tableLayout);
-//        mTableLayout.addView(tr, trParams);
 
-        /*new stuff here*/
-
-
+    public void addLog() {
         ArrayList<Device> devices = dbm.getDevices();
         TableLayout alerts = findViewById(R.id.tableLayout);
         TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
@@ -85,18 +63,18 @@ public class Activity_log extends AppCompatActivity {
 
         /* update view of triggers */
         alerts.removeAllViews();
-        ArrayList<String> triggers = new ArrayList<String>();
-        ArrayList<Long> allDevicesDates = new ArrayList<Long>();
+        ArrayList<String> triggers = new ArrayList<>();
+        //ArrayList<String> triggerDevices = new ArrayList<>();
+        ArrayList<Long> allDevicesDates = new ArrayList<>();
 
-        /* grab every trigger from every device */
-        for (int x = 0; x < devices.size(); x++) {
-            ArrayList<String> triggersTemp = dbm.getTriggers(devices.get(x));
-            Log.w("trigs", triggersTemp.toString());
-            for (int y = 0; y < triggersTemp.size(); y++) {
-                triggers.add(triggersTemp.get(y));
+        ArrayList<Triggers> triggersTemp = dbm.getAllTriggers();
+        for (int y = 0; y < triggersTemp.size(); y++) {
+            for (int z = 0; z < triggersTemp.get(y).getTriggers().size(); z++) {
+                //triggerDevices.add(triggersTemp.get(y).getName());
+                triggers.add(triggersTemp.get(y).getTriggers().get(z));
             }
         }
-
+        Log.w("ahhhh3", triggers.toString());
         /* convert timestamp to long*/
         for (int x = 0; x < triggers.size(); x++) {
             allDevicesDates.add(Long.parseLong(triggers.get(x)));

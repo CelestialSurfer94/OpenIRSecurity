@@ -24,6 +24,7 @@ public class AddUserActivity extends AppCompatActivity {
     private Button createUserButton;
     private FirebaseAuth mAuth;
     private DatabaseManager dbm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +40,7 @@ public class AddUserActivity extends AppCompatActivity {
         dbm = DatabaseManager.getInstance();
     }
 
-    public void createUser(View v){
+    public void createUser(View v) {
         String email = emailText.getText().toString();
         String pass0 = password0Text.getText().toString();
         String pass1 = password1Text.getText().toString();
@@ -48,9 +49,7 @@ public class AddUserActivity extends AppCompatActivity {
             Toast.makeText(this, "Passwords do not match.", Toast.LENGTH_SHORT).show();
             password0Text.setText("");
             password1Text.setText("");
-        }
-
-        else if (pass1.equals("")) { // user attempts to sign in with no password
+        } else if (pass1.equals("")) { // user attempts to sign in with no password
             Toast.makeText(this, "Password cannot be empty.", Toast.LENGTH_SHORT).show();
 
         } else {
@@ -77,7 +76,7 @@ public class AddUserActivity extends AppCompatActivity {
         }
     }
 
-    private void sendUserEmailKey(String id, String email){
+    private void sendUserEmailKey(String id, String email) {
         Intent i = new Intent(AddUserActivity.this, EmailActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         //pass email and id to intent with a bundle
@@ -92,7 +91,7 @@ public class AddUserActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (requestCode) {
             case 1: //login activity, create user activity
                 Intent returnIntent = new Intent();
                 setResult(AddUserActivity.RESULT_OK, returnIntent);

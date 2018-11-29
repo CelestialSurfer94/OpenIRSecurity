@@ -52,7 +52,7 @@ public class EmailActivity extends AppCompatActivity {
 
     }
 
-    public void sendEmail(View v){
+    public void sendEmail(View v) {
 
         String recipientList = to_edit_text.getText().toString();
         String[] recipients = recipientList.split(",");
