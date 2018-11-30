@@ -14,9 +14,9 @@
         android:id="@+id/userEmailText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <Button
@@ -28,75 +28,93 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/addsensorbutton"
         app:layout_constraintStart_toStartOf="@+id/addsensorbutton"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/sensorscroll2" />
 
     <TextView
         android:id="@+id/text_view_id2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginBottom="9dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:text="@string/recentalerts"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+        app:layout_constraintBottom_toTopOf="@+id/sensorscroll2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addsensorbutton"
-        android:layout_marginLeft="16dp" />
+        app:layout_constraintTop_toBottomOf="@+id/addsensorbutton" />
 
     <TextView
         android:id="@+id/text_view_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
         android:text="@string/ys"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/sensorscroll"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="16dp" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--<android.support.constraint.Guideline-->
+    <!--android:id="@+id/guideline"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical"-->
+    <!--app:layout_constraintGuide_end="192dp" />-->
 
     <Button
         android:id="@+id/addsensorbutton"
         android:layout_width="117dp"
         android:layout_height="38dp"
-        android:layout_marginStart="78dp"
-        android:layout_marginBottom="12dp"
         android:text="Add Sensor"
         app:layout_constraintBottom_toTopOf="@+id/text_view_id2"
-        app:layout_constraintStart_toStartOf="@+id/text_view_id2"
-        app:layout_constraintTop_toBottomOf="@+id/sensorscroll"
-        android:layout_marginLeft="78dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sensorscroll" />
 
     <ScrollView
         android:id="@+id/sensorscroll"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toTopOf="@+id/addsensorbutton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_view_id">
+
         <TableLayout
             android:id="@+id/tableLayout2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </TableLayout>
+            android:layout_height="match_parent"></TableLayout>
     </ScrollView>
-    <TableLayout
-        android:id="@+id/tableLayout"
+
+    <ScrollView
+        android:id="@+id/sensorscroll2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toTopOf="@+id/viewallbutton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_id2"></TableLayout>
+        app:layout_constraintTop_toBottomOf="@+id/text_view_id2">
+
+        <TableLayout
+            android:id="@+id/tableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></TableLayout>
+    </ScrollView>
 
 
 </android.support.constraint.ConstraintLayout>

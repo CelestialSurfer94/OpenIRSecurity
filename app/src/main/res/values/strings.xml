@@ -16,7 +16,7 @@
     </string>
     <string name="ys">Your Sensors </string>
     <string name="recentalerts">Recent Alerts </string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Open IR Security</string>
     <string name="add_sensor_title">Add Sensor</string>
     <string name="enable_default">Enable By Default</string>
     <string name="recv_notifications">Receive Notifications</string>
