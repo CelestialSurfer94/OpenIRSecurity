@@ -26,31 +26,65 @@ import java.util.concurrent.TimeUnit;
 public class Activity_log extends AppCompatActivity {
     private Timer autoUpdate;
     private DatabaseManager dbm;
+    private Spinner device_spinner;
+    private ArrayAdapter<CharSequence> device_names;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log);
         dbm = DatabaseManager.getInstance();
+
+        //Find spinners for start date
+        Spinner sDay = findViewById(R.id.start_day);
+        Spinner sMonth = findViewById(R.id.start_month);
+        Spinner sYear = findViewById(R.id.start_year);
+        //Find spinner for end date
+        Spinner eDay = findViewById(R.id.end_day);
+        Spinner eMonth = findViewById(R.id.end_month);
+        Spinner eYear = findViewById(R.id.end_year);
+
+        device_spinner = findViewById(R.id.device_picker);
+        device_names = new ArrayAdapter<CharSequence>(this, R.layout.device_spinner);
+        //Create ArrayAdapters for Month, Day, and Year
+        ArrayAdapter<CharSequence> days = ArrayAdapter.createFromResource(this, R.array.days, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> months = ArrayAdapter.createFromResource(this, R.array.months, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> years = ArrayAdapter.createFromResource(this, R.array.years, android.R.layout.simple_spinner_item);
+
+        days.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        months.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        years.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Sets Adapter for each Spinner
+        sDay.setAdapter(days);
+        eDay.setAdapter(days);
+        sMonth.setAdapter(months);
+        eMonth.setAdapter(months);
+        sYear.setAdapter(years);
+        eYear.setAdapter(years);
+
         addLog();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        autoUpdate = new Timer();
-        autoUpdate.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        addLog();
-                        //Toast.makeText(MainActivity.this, "refreshed view", Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        }, 500, 10000);
+//        autoUpdate = new Timer();
+//        autoUpdate.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        addLog();
+//                        //Toast.makeText(MainActivity.this, "refreshed view", Toast.LENGTH_LONG).show();
+//                    }
+//                });
+//            }
+//        }, 500, 10000);
+        addLog();
+    }
+    public void search(View v){
+        addLog();
     }
 
     public void addLog() {
@@ -68,11 +102,21 @@ public class Activity_log extends AppCompatActivity {
         ArrayList<String> triggers = new ArrayList<>();
         ArrayList<Long> allDevicesDates = new ArrayList<>();
 
+        if(devices != null){
+            if(device_names != null ){
+                device_names.clear();
+            }
+            for(Device d: devices){
+                device_names.add(d.getName());
+            }
+            //device_names.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            device_spinner.setAdapter(device_names);
+        }
+
 
         /* get device name */
-        String deviceChosen = "j";
-
-
+        //String deviceChosen = "j";
+        String deviceChosen = device_spinner.getSelectedItem().toString();
 
 
         ArrayList<Triggers> triggersTemp = dbm.getAllTriggers();
@@ -99,8 +143,17 @@ public class Activity_log extends AppCompatActivity {
         }
 
         /* pick between a range of dates */
-        String start = "11-28-2018";
-        String end = "12-03-2018";
+        String sDay =((Spinner) findViewById(R.id.start_day)).getSelectedItem().toString();
+        String sMonth = ((Spinner)findViewById(R.id.start_month)).getSelectedItem().toString();
+        String sYear = ((Spinner) findViewById(R.id.start_year)).getSelectedItem().toString();
+        //Find spinner for end date
+        String eDay = ((Spinner) findViewById(R.id.end_day)).getSelectedItem().toString();
+        String eMonth = ((Spinner) findViewById(R.id.end_month)).getSelectedItem().toString();
+        String eYear = ((Spinner) findViewById(R.id.end_year)).getSelectedItem().toString();
+
+
+        String start = sMonth + "-" + sDay + "-" + sYear;
+        String end = eMonth + "-" + eDay + "-" + eYear;
         SimpleDateFormat dateRange = new SimpleDateFormat("MM-dd-yyyy");
         long startDate = 0;
         try {

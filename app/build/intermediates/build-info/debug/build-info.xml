@@ -7,22 +7,22 @@
     format="10"
     ir-eligibility="COMPATIBLE"
     plugin-version="3.2.1"
-    timestamp="1543953547483"
+    timestamp="1543960615336"
     token="3019641053391439693"
     verifier="COLD_SWAP_REQUESTED" >
 
     <task
         name="javac"
-        duration="160" />
+        duration="155" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="38" />
+        duration="32" />
     <task
         name="verifier"
-        duration="2" />
+        duration="5" />
 
     <artifact
         location="/home/propers/cs412/group/CS412_Project/app/build/intermediates/split-apk/debug/slices/slice_3.apk"
@@ -71,8 +71,47 @@
     </build>
     <build
         build-mode="COLD"
+        ir-eligibility="R_CLASS_CHANGE"
+        timestamp="1543957393072"
+        verifier="COLD_SWAP_REQUESTED" >
+        <artifact
+            location="/home/propers/cs412/group/CS412_Project/app/build/intermediates/split-apk/debug/slices/slice_8.apk"
+            type="SPLIT" />
+        <artifact
+            location="/home/propers/cs412/group/CS412_Project/app/build/intermediates/split-apk/debug/slices/slice_0.apk"
+            type="SPLIT" />
+        <artifact
+            location="/home/propers/cs412/group/CS412_Project/app/build/intermediates/split-apk/debug/slices/slice_7.apk"
+            type="SPLIT" />
+        <artifact
+            location="/home/propers/cs412/group/CS412_Project/app/build/intermediates/split-apk/debug/slices/slice_1.apk"
+            type="SPLIT" />
+        <artifact
+            location="/home/propers/cs412/group/CS412_Project/app/build/intermediates/split-apk/debug/slices/slice_4.apk"
+            type="SPLIT" />
+        <artifact
+            location="/home/propers/cs412/group/CS412_Project/app/build/intermediates/split-apk/debug/slices/slice_5.apk"
+            type="SPLIT" />
+        <artifact
+            location="/home/propers/cs412/group/CS412_Project/app/build/intermediates/split-apk/debug/slices/slice_6.apk"
+            type="SPLIT" />
+        <artifact
+            location="/home/propers/cs412/group/CS412_Project/app/build/intermediates/split-apk/debug/slices/slice_9.apk"
+            type="SPLIT" />
+    </build>
+    <build
+        build-mode="COLD"
+        ir-eligibility="METHOD_ADDED"
+        timestamp="1543960332622"
+        verifier="COLD_SWAP_REQUESTED" >
+        <artifact
+            location="/home/propers/cs412/group/CS412_Project/app/build/intermediates/instant-run-apk/debug/app-debug.apk"
+            type="SPLIT_MAIN" />
+    </build>
+    <build
+        build-mode="COLD"
         ir-eligibility="COMPATIBLE"
-        timestamp="1543953547483"
+        timestamp="1543960615336"
         verifier="COLD_SWAP_REQUESTED" >
         <artifact
             location="/home/propers/cs412/group/CS412_Project/app/build/intermediates/split-apk/debug/slices/slice_3.apk"
