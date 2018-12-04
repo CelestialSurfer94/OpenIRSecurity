@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
             dbm.setCurrentUser(user);
             */
 
-
         }
 
         /* button functionality */
@@ -118,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
             TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
             TableRow.LayoutParams rlp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
 
-
             String test = "asdfasdfasdfasfd";
             TextView sensorTv, logTv;
             TableRow sensorRow, logRow;
@@ -154,28 +152,6 @@ public class MainActivity extends AppCompatActivity {
                 sensors.addView(sensorRow, tlp);
             }
 
-
-            /* Add logs to view */
-
-            /* 4 logs at max */
-            /* check every device for the most recent trigger */
-//            for (int j = 0; j < devices.size(); j++) {
-//                triggers = devices.get(j).getTriggers();
-//
-//                /* get jth index of device */
-//                if (i <= triggers.size() - 1) {
-//                    maxTriggers--;
-//                    logTv = new TextView(this);
-//                    logTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-//                    logTv.setLayoutParams(rlp);
-//                    logTv.setText(devices.get(j).getName() + " " + triggers.get(i));
-//                    logRow = new TableRow(this);
-//                    logRow.setLayoutParams(tlp);
-//                    logRow.addView(logTv);
-//                    alerts.addView(logRow, tlp);
-//                }
-//            }
-
             /* update view of triggers */
             alerts.removeAllViews();
             ArrayList<Long> allDevicesDates = new ArrayList<>();
@@ -205,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
                     if (allDevicesDates.size() != 0) {
                         Collections.sort(allDevicesDates);
                         Collections.reverse(allDevicesDates);
+
                     }
 
                     for (int x = 0; x < allDevicesDates.size(); x++) {

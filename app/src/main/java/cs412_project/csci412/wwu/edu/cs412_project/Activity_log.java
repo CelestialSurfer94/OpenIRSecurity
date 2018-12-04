@@ -13,6 +13,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.lang.reflect.Array;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,6 +21,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class Activity_log extends AppCompatActivity {
     private Timer autoUpdate;
@@ -64,17 +66,27 @@ public class Activity_log extends AppCompatActivity {
         /* update view of triggers */
         alerts.removeAllViews();
         ArrayList<String> triggers = new ArrayList<>();
-        //ArrayList<String> triggerDevices = new ArrayList<>();
         ArrayList<Long> allDevicesDates = new ArrayList<>();
+
+
+        /* get device name */
+        String deviceChosen = "j";
+
+
+
 
         ArrayList<Triggers> triggersTemp = dbm.getAllTriggers();
         for (int y = 0; y < triggersTemp.size(); y++) {
-            for (int z = 0; z < triggersTemp.get(y).getTriggers().size(); z++) {
-                //triggerDevices.add(triggersTemp.get(y).getName());
-                triggers.add(triggersTemp.get(y).getTriggers().get(z));
+            /* found device, exit loop after grabbing triggers */
+            if (triggersTemp.get(y).getName().equals(deviceChosen)) {
+                for (int z = 0; z < triggersTemp.get(y).getTriggers().size(); z++) {
+                    //triggerDevices.add(triggersTemp.get(y).getName());
+                    triggers.add(triggersTemp.get(y).getTriggers().get(z));
+                }
+                y = triggersTemp.size()-1;
             }
         }
-        Log.w("ahhhh3", triggers.toString());
+
         /* convert timestamp to long*/
         for (int x = 0; x < triggers.size(); x++) {
             allDevicesDates.add(Long.parseLong(triggers.get(x)));
@@ -86,16 +98,41 @@ public class Activity_log extends AppCompatActivity {
             Collections.reverse(allDevicesDates);
         }
 
+        /* pick between a range of dates */
+        String start = "11-28-2018";
+        String end = "12-03-2018";
+        SimpleDateFormat dateRange = new SimpleDateFormat("MM-dd-yyyy");
+        long startDate = 0;
+        try {
+            startDate = dateRange.parse(start).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long endDate = 0;
+        try {
+            endDate = dateRange.parse(end).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+        /* display views */
+        Long dayToMs = TimeUnit.DAYS.toMillis(1);
         for (int x = 0; x < allDevicesDates.size(); x++) {
-            logTv = new TextView(this);
-            logTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-            logTv.setLayoutParams(rlp);
-            cal.setTimeInMillis(allDevicesDates.get(x));
-            logTv.setText(date.format(cal.getTime()));
-            logRow = new TableRow(this);
-            logRow.setLayoutParams(tlp);
-            logRow.addView(logTv);
-            alerts.addView(logRow, tlp);
+            /* if device is between ranges */
+            if (startDate <= allDevicesDates.get(x) && endDate + dayToMs >= allDevicesDates.get(x)) {
+                logTv = new TextView(this);
+                logTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                logTv.setLayoutParams(rlp);
+                cal.setTimeInMillis(allDevicesDates.get(x));
+                logTv.setText(date.format(cal.getTime()));
+                logRow = new TableRow(this);
+                logRow.setLayoutParams(tlp);
+                logRow.addView(logTv);
+                alerts.addView(logRow, tlp);
+            }
         }
     }
 }
