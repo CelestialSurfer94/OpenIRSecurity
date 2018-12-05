@@ -121,9 +121,9 @@ public class DatabaseManager {
         ref.child("Timestamp").setValue(ServerValue.TIMESTAMP);
     }
 
-    public void delTrigger(String trig, Device device, String userID) {
-        DatabaseReference ref = db.getReference("users/" + userID + "/devices/" + device.getName() + "/triggerEvents");
-        ref.child(trig).removeValue();
+    public void delTrigger(Device d) {
+        //DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + device.getName() + "/triggerEvents");
+        //ref.child(trig).removeValue();
     }
 
     public void delUser(User user) {
