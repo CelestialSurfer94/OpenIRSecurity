@@ -28,6 +28,7 @@ public class Activity_log extends AppCompatActivity {
     private DatabaseManager dbm;
     private Spinner device_spinner;
     private ArrayAdapter<CharSequence> device_names;
+    private ArrayAdapter<CharSequence> years;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,22 @@ public class Activity_log extends AppCompatActivity {
         //Create ArrayAdapters for Month, Day, and Year
         ArrayAdapter<CharSequence> days = ArrayAdapter.createFromResource(this, R.array.days, android.R.layout.simple_spinner_item);
         ArrayAdapter<CharSequence> months = ArrayAdapter.createFromResource(this, R.array.months, android.R.layout.simple_spinner_item);
-        ArrayAdapter<CharSequence> years = ArrayAdapter.createFromResource(this, R.array.years, android.R.layout.simple_spinner_item);
+        //ArrayAdapter<CharSequence> years = ArrayAdapter.createFromResource(this, R.array.years, android.R.layout.simple_spinner_item);
+
+
+        years = new ArrayAdapter<CharSequence>(this, R.layout.spinner_years);
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+        Date date = new Date();
+        String currentDate = sdf.format(date);
+        int currentYear = Integer.parseInt(currentDate.substring(currentDate.length()-4,currentDate.length()));
+
+        for (int i = currentYear; i >= 2018; i--){
+            years.add(Integer.toString(i));
+        }
+        sYear.setAdapter(years);
+        eYear.setAdapter(years);
 
         days.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         months.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -59,10 +75,10 @@ public class Activity_log extends AppCompatActivity {
         eDay.setAdapter(days);
         sMonth.setAdapter(months);
         eMonth.setAdapter(months);
-        sYear.setAdapter(years);
-        eYear.setAdapter(years);
+       // sYear.setAdapter(years);
+       // eYear.setAdapter(years);
 
-        addLog();
+        addLog("");
     }
 
     @Override
@@ -81,13 +97,14 @@ public class Activity_log extends AppCompatActivity {
 //                });
 //            }
 //        }, 500, 10000);
-        addLog();
+        addLog("");
     }
     public void search(View v){
-        addLog();
+        String deviceChosen = device_spinner.getSelectedItem().toString();
+        addLog(deviceChosen);
     }
 
-    public void addLog() {
+    public void addLog(String deviceName) {
         ArrayList<Device> devices = dbm.getDevices();
         TableLayout alerts = findViewById(R.id.tableLayout);
         TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
@@ -109,14 +126,18 @@ public class Activity_log extends AppCompatActivity {
             for(Device d: devices){
                 device_names.add(d.getName());
             }
-            //device_names.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             device_spinner.setAdapter(device_names);
+        }
+        for (int i = 0; i < device_names.getCount(); i++){
+            if (device_names.getItem(i).toString().equals(deviceName)){
+                device_spinner.setSelection(i);
+            }
         }
 
 
         /* get device name */
         //String deviceChosen = "j";
-        String deviceChosen = device_spinner.getSelectedItem().toString();
+        String deviceChosen = deviceName;
 
 
         ArrayList<Triggers> triggersTemp = dbm.getAllTriggers();
