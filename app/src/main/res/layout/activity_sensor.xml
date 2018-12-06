@@ -57,6 +57,8 @@
 
         <Button
             android:id="@+id/armed_button"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:textColor="@color/buttonText"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/disarmed_button"
@@ -69,6 +71,8 @@
 
         <Button
             android:id="@+id/disarmed_button"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:textColor="@color/buttonText"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/text_view_id"

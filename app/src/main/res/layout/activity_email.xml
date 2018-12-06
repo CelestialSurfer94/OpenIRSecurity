@@ -50,6 +50,8 @@
         android:id="@+id/button_send"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:textColor="@color/buttonText"
         android:onClick="sendEmail"
         android:text="send" />
 
