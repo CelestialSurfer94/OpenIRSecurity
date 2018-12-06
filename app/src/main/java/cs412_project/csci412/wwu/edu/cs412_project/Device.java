@@ -11,9 +11,6 @@ public class Device {
     private String name;
     private ArrayList<String> triggers;
     private boolean isArmed;
-    private boolean isOnline;
-    private String wifiSSD;
-    private String wifiPwd;
 
     public Device(String name) {
         this.name = name;
@@ -32,6 +29,15 @@ public class Device {
         return triggers;
     }
 
+    public boolean isArmed() {
+        return isArmed;
+    }
+
+    public void setArmed(boolean armed) {
+        isArmed = armed;
+    }
+
+    //Testing methods
     public void setTriggers(ArrayList<String> triggers) {
         this.triggers = triggers;
     }
@@ -46,35 +52,4 @@ public class Device {
         this.triggers.remove(trigger);
     }
 
-    public boolean isArmed() {
-        return isArmed;
-    }
-
-    public void setArmed(boolean armed) {
-        isArmed = armed;
-    }
-
-    public boolean isOnline() {
-        return isOnline;
-    }
-
-    public void setOnline(boolean online) {
-        isOnline = online;
-    }
-
-    public String getWifiSSD() {
-        return wifiSSD;
-    }
-
-    public void setWifiSSD(String wifiSSD) {
-        this.wifiSSD = wifiSSD;
-    }
-
-    public String getWifiPwd() {
-        return wifiPwd;
-    }
-
-    public void setWifiPwd(String wifiPwd) {
-        this.wifiPwd = wifiPwd;
-    }
 }

@@ -19,8 +19,6 @@ public class Activity_AddSensor extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addsensor);
 
-
-
         /* back to main activity */
         Button backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -45,17 +43,20 @@ public class Activity_AddSensor extends AppCompatActivity {
         CheckBox enable_check = (CheckBox) findViewById(R.id.enable_check);
         CheckBox receive_check = (CheckBox) findViewById(R.id.receive_check);
         boolean armed = enable_check.isChecked();
-        boolean receive = receive_check.isChecked();
         if (name_field.getText().toString().equals("")) {
-            Toast.makeText(this, "Sensor Name can not be empty.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Sensor name can not be empty.", Toast.LENGTH_LONG).show();
             return;
         }
+
+        if(name_field.getText().length() >= 20){
+            Toast.makeText(this, "Sensor name is too long", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Device d = new Device(name_field.getText().toString());
         d.setArmed(armed);
-
         dbm.getUser().addDevices(d);
         dbm.addDevice(d, dbm.getUser().getId());
-        //Resets EditText and CheckBox's so that user can add another device
         Toast.makeText(this, "Sensor Added", Toast.LENGTH_LONG).show();
         name_field.setText("");
         enable_check.setChecked(false);

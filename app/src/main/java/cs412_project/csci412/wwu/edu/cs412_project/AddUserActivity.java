@@ -67,7 +67,7 @@ public class AddUserActivity extends AppCompatActivity {
                                 sendUserEmailKey(user.getUid(), user.getEmail());
                             } else {
                                 // If sign in fails, display a message to the user.
-                                //TODO ADD BETTER ERROR HANDLING:
+                                //TODO ADD MORE DESCRIPTIVE ERROR HANDLING:
                                 Toast.makeText(AddUserActivity.this, task.getException().toString(),
                                         Toast.LENGTH_SHORT).show();
                             }
@@ -92,11 +92,10 @@ public class AddUserActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case 1: //login activity, create user activity
+            case 1: //email activity was completed.
                 Intent returnIntent = new Intent();
                 setResult(AddUserActivity.RESULT_OK, returnIntent);
                 finish();
         }
     }
-
 }

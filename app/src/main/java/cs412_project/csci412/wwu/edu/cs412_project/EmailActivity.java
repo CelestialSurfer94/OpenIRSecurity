@@ -10,55 +10,48 @@ import android.widget.TextView;
 
 public class EmailActivity extends AppCompatActivity {
 
-    private EditText to_edit_text;
-    private TextView subject_contents;
-    private TextView message_contents;
-    private String message;
-    private String id;
-    private String email;
+    private EditText toEditText;
+    private TextView subjectContents;
+    private TextView messageContents;
+
     public Bundle bundle = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email);
+        String message;
+        String id;
+        String email;
 
         //get parameters sent through intent
         bundle = this.getIntent().getExtras();
         email = bundle.getString("email");
         id = bundle.getString("id");
-
-        to_edit_text = findViewById(R.id.edit_text_to);
-        subject_contents = findViewById(R.id.text_view_subject_contents);
-        message_contents = findViewById(R.id.text_view_message_contents);
-
-
-        to_edit_text.setText(email);
+        toEditText = findViewById(R.id.edit_text_to);
+        subjectContents = findViewById(R.id.text_view_subject_contents);
+        messageContents = findViewById(R.id.text_view_message_contents);
+        toEditText.setText(email);
         message = "Hello, you device key for Open IR Security is: \n\n" + id + "\n\nPlease follow the " +
                 "instructions to enter the key on your device.\nThank you for using Open" +
                 " IR Security!";
-        message_contents.setText(message);
-
-
+        messageContents.setText(message);
         Button buttonSend = findViewById(R.id.button_send);
-
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendEmail(v);
             }
         });
-
-
     }
 
     public void sendEmail(View v) {
 
-        String recipientList = to_edit_text.getText().toString();
+        String recipientList = toEditText.getText().toString();
         String[] recipients = recipientList.split(",");
 
-        String subject = subject_contents.getText().toString();
-        String message = message_contents.getText().toString();
+        String subject = subjectContents.getText().toString();
+        String message = messageContents.getText().toString();
 
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.putExtra(Intent.EXTRA_EMAIL, recipients);

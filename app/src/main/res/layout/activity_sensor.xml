@@ -23,12 +23,14 @@
     <!--</android.support.design.widget.AppBarLayout>-->
 
 
-
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:id="@+id/relativeLayout2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/text_view_id"
@@ -47,9 +49,9 @@
             android:id="@+id/is_armed_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/recent_alerts_tv"
-            android:layout_alignStart="@+id/recent_alerts_tv"
             android:layout_below="@+id/text_view_id"
+            android:layout_alignStart="@+id/recent_alerts_tv"
+            android:layout_alignLeft="@+id/recent_alerts_tv"
             android:text="Is Armed: "
             android:textSize="18sp" />
 
@@ -58,23 +60,23 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/disarmed_button"
-            android:layout_alignBottom="@+id/disarmed_button"
-            android:layout_alignLeft="@+id/is_armed_tv"
             android:layout_alignStart="@+id/is_armed_tv"
-            android:layout_marginLeft="18dp"
+            android:layout_alignLeft="@+id/is_armed_tv"
+            android:layout_alignBottom="@+id/disarmed_button"
             android:layout_marginStart="18dp"
+            android:layout_marginLeft="18dp"
             android:text="Arm" />
 
         <Button
             android:id="@+id/disarmed_button"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/text_view_id"
             android:layout_alignEnd="@+id/sensorscroll"
             android:layout_alignRight="@+id/sensorscroll"
-            android:layout_below="@+id/text_view_id"
+            android:layout_marginTop="37dp"
             android:layout_marginEnd="31dp"
             android:layout_marginRight="31dp"
-            android:layout_marginTop="37dp"
             android:text="Disarm" />
 
         <TextView
@@ -97,11 +99,11 @@
             android:layout_below="@+id/recent_alerts_tv"
             android:layout_marginLeft="37dp"
             android:layout_marginRight="37dp">
+
             <TableLayout
                 android:id="@+id/tableLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            </TableLayout>
+                android:layout_height="wrap_content"></TableLayout>
         </ScrollView>
 
     </RelativeLayout>

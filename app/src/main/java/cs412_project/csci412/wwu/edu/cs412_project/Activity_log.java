@@ -3,7 +3,6 @@ package cs412_project.csci412.wwu.edu.cs412_project;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -11,8 +10,7 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
-import java.lang.reflect.Array;
+import android.widget.Toast;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -101,10 +99,14 @@ public class Activity_log extends AppCompatActivity {
     }
     public void search(View v){
         String deviceChosen = device_spinner.getSelectedItem().toString();
-        addLog(deviceChosen);
+        int numLogs = addLog(deviceChosen);
+        if(numLogs == 0){
+            Toast.makeText(this, "Did not find triggers in that date range", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    public void addLog(String deviceName) {
+    //returns the number of logs added to the view
+    public int addLog(String deviceName) {
         ArrayList<Device> devices = dbm.getDevices();
         TableLayout alerts = findViewById(R.id.tableLayout);
         TableLayout.LayoutParams tlp = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
@@ -128,22 +130,17 @@ public class Activity_log extends AppCompatActivity {
             }
             device_spinner.setAdapter(device_names);
         }
+
         for (int i = 0; i < device_names.getCount(); i++){
             if (device_names.getItem(i).toString().equals(deviceName)){
                 device_spinner.setSelection(i);
             }
         }
 
-
-        /* get device name */
-        //String deviceChosen = "j";
-        String deviceChosen = deviceName;
-
-
         ArrayList<Triggers> triggersTemp = dbm.getAllTriggers();
         for (int y = 0; y < triggersTemp.size(); y++) {
             /* found device, exit loop after grabbing triggers */
-            if (triggersTemp.get(y).getName().equals(deviceChosen)) {
+            if (triggersTemp.get(y).getName().equals(deviceName)) {
                 for (int z = 0; z < triggersTemp.get(y).getTriggers().size(); z++) {
                     //triggerDevices.add(triggersTemp.get(y).getName());
                     triggers.add(triggersTemp.get(y).getTriggers().get(z));
@@ -165,11 +162,11 @@ public class Activity_log extends AppCompatActivity {
 
         /* pick between a range of dates */
         String sDay =((Spinner) findViewById(R.id.start_day)).getSelectedItem().toString();
-        String sMonth = ((Spinner)findViewById(R.id.start_month)).getSelectedItem().toString();
+        String sMonth = ((((Spinner)findViewById(R.id.start_month)).getSelectedItemPosition() % 12) + 1) + "";
         String sYear = ((Spinner) findViewById(R.id.start_year)).getSelectedItem().toString();
         //Find spinner for end date
         String eDay = ((Spinner) findViewById(R.id.end_day)).getSelectedItem().toString();
-        String eMonth = ((Spinner) findViewById(R.id.end_month)).getSelectedItem().toString();
+        String eMonth = ((((Spinner)findViewById(R.id.end_month)).getSelectedItemPosition() % 12) + 1) + "";
         String eYear = ((Spinner) findViewById(R.id.end_year)).getSelectedItem().toString();
 
 
@@ -190,8 +187,7 @@ public class Activity_log extends AppCompatActivity {
         }
 
 
-
-
+        int count = 0;
         /* display views */
         Long dayToMs = TimeUnit.DAYS.toMillis(1);
         for (int x = 0; x < allDevicesDates.size(); x++) {
@@ -206,7 +202,9 @@ public class Activity_log extends AppCompatActivity {
                 logRow.setLayoutParams(tlp);
                 logRow.addView(logTv);
                 alerts.addView(logRow, tlp);
+                count++;
             }
         }
+        return count;
     }
 }
