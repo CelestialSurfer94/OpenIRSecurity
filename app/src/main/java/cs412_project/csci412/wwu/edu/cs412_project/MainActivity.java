@@ -91,7 +91,9 @@ public class MainActivity extends AppCompatActivity {
         viewall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, Activity_log.class));
+                if(!dbm.getDevices().isEmpty()) {
+                    startActivity(new Intent(MainActivity.this, Activity_log.class));
+                }
             }
         });
     }
@@ -198,20 +200,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-
-
-
-
-
-
-
-
-
-
             TextView userText = findViewById(R.id.userEmailText);
             userText.setText(user.getEmail());
         }
-        // alerts.addView(row,tlp);
     }
 
     @Override

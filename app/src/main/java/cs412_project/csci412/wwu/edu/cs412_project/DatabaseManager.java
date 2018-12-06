@@ -45,25 +45,25 @@ public class DatabaseManager {
     //Used during new user creation in AddUserActivity. Adds a new authenticated user
     //into the Firebase database.
     public void createUser(User u) {
-        DatabaseReference ref = db.getReference("users");
+        DatabaseReference ref = db.getReference(u.getId());
         ref.child(u.getId()).setValue(null);
-        ref = db.getReference("users/" + u.getId());
+        ref = db.getReference(u.getId());
         ref.child("email").setValue(u.getEmail());
         ref.child("devices").setValue(null);
     }
 
 
     public void addDevice(Device device, String userID) {
-        DatabaseReference ref = db.getReference("users/" + userID + "/devices");
+        DatabaseReference ref = db.getReference( userID + "/devices");
         ref.child(device.getName()).setValue(null);
-        ref = db.getReference("users/" + userID + "/devices/" + device.getName());
+        ref = db.getReference(userID + "/devices/" + device.getName());
         ref.child("deviceName").setValue(device.getName());
         ref.child("isArmed").setValue(device.isArmed());
         ref.child("isOnline").setValue(false);
         ref.child("wifiSSD").setValue("");
         ref.child("wifiPass").setValue("");
         ref.child("triggerEvents").setValue(null);
-        ref.addChildEventListener(new ChildEventListener() {
+        /*ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 String deviceName = (String) dataSnapshot.getValue();
@@ -89,11 +89,12 @@ public class DatabaseManager {
 
             }
         });
+        */
     }
 
     //
     public void addArmedListener(final Device d){
-        DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + d.getName() + "/isArmed");
+        DatabaseReference ref = db.getReference(user.getId() + "/devices/" + d.getName() + "/isArmed");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -108,14 +109,14 @@ public class DatabaseManager {
     }
 
     public void setArmed(boolean Armed, Device d) {
-        DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + d.getName() + "/isArmed");
+        DatabaseReference ref = db.getReference(user.getId() + "/devices/" + d.getName() + "/isArmed");
         ref.setValue(Armed);
         d.setArmed(Armed);
     }
 
     // Retrieve all devices for a given user from the database and store inside arrayList devices.
     public ArrayList<Device> getDevices() {
-        DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices");
+        DatabaseReference ref = db.getReference(user.getId() + "/devices");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -140,7 +141,7 @@ public class DatabaseManager {
     }
 
     public ArrayList<String> getTriggers(Device device) {
-        DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + device.getName() + "/triggerEvents");
+        DatabaseReference ref = db.getReference( user.getId() + "/devices/" + device.getName() + "/triggerEvents");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -202,22 +203,22 @@ public class DatabaseManager {
 
     //Internal testing and prototyping methods
     public void delDevice(Device device, String userID) {
-        DatabaseReference ref = db.getReference("users/" + userID + "/devices/" + device.getName());
+        DatabaseReference ref = db.getReference(userID + "/devices/" + device.getName());
         ref.child(device.getName()).removeValue();
     }
 
     private void addTrigger(String trig, Device device) {
-        DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + device.getName() + "/triggerEvents");
+        DatabaseReference ref = db.getReference(user.getId() + "/devices/" + device.getName() + "/triggerEvents");
         ref.child(trig).setValue(trig);
     }
 
     private void addTimestamp(Device device) {
-        DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + device.getName() + "/triggerEvents");
+        DatabaseReference ref = db.getReference(user.getId() + "/devices/" + device.getName() + "/triggerEvents");
         ref.child("Timestamp").setValue(ServerValue.TIMESTAMP);
     }
 
     private void delTrigger(Device d) {
-        //DatabaseReference ref = db.getReference("users/" + user.getId() + "/devices/" + device.getName() + "/triggerEvents");
+        //DatabaseReference ref = db.getReference(user.getId() + "/devices/" + device.getName() + "/triggerEvents");
         //ref.child(trig).removeValue();
     }
 

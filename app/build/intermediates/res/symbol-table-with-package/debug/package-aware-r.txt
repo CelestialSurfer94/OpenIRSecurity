@@ -16,7 +16,11 @@ anim design_snackbar_out
 anim tooltip_enter
 anim tooltip_exit
 animator design_appbar_state_list_animator
+array days
+array devices
 array filter_array
+array months
+array years
 attr actionBarDivider
 attr actionBarItemBackground
 attr actionBarPopupTheme
@@ -431,6 +435,8 @@ bool abc_allow_stacked_button_bar
 bool abc_config_actionMenuItemAllCaps
 bool abc_config_closeDialogWhenTouchOutside
 bool abc_config_showMenuShortcutsWhenKeyboardPresent
+color WWU_blue
+color WWU_light_blue
 color abc_background_cache_hint_selector_material_dark
 color abc_background_cache_hint_selector_material_light
 color abc_btn_colored_borderless_text_material
@@ -871,6 +877,7 @@ id beginning
 id blocking
 id bottom
 id buttonPanel
+id button_send
 id cancel_action
 id center
 id center_horizontal
@@ -899,18 +906,28 @@ id design_menu_item_action_area
 id design_menu_item_action_area_stub
 id design_menu_item_text
 id design_navigation_view
+id device_bar
+id device_picker
+id device_spinner_default
+id device_spinner_years
 id dimensions
 id direct
 id disableHome
 id disarmed_button
 id edit_query
+id edit_text_to
 id email
 id email_login_form
 id email_sign_in_button
 id enable_check
 id enable_label
 id end
+id end_bar
+id end_day
+id end_month
 id end_padder
+id end_text
+id end_year
 id enterAlways
 id enterAlwaysCollapsed
 id exitUntilCollapsed
@@ -919,7 +936,6 @@ id expanded_menu
 id fill
 id fill_horizontal
 id fill_vertical
-id filter_menu
 id fixed
 id forever
 id ghost_view
@@ -935,6 +951,7 @@ id ifRoom
 id image
 id info
 id invisible
+id is_armed_tv
 id italic
 id item_touch_helper_previous_elevation
 id largeLabel
@@ -976,6 +993,7 @@ id recent_alerts_tv
 id recieve_label
 id register_button
 id relativeLayout
+id relativeLayout2
 id right
 id right_icon
 id right_side
@@ -1000,6 +1018,7 @@ id search_src_text
 id search_voice_btn
 id select_dialog_listview
 id sensorscroll
+id sensorscroll2
 id shortcut
 id showCustom
 id showHome
@@ -1017,6 +1036,11 @@ id src_in
 id src_over
 id standard
 id start
+id start_bar
+id start_day
+id start_month
+id start_text
+id start_year
 id status_bar_latest_event_content
 id submenuarrow
 id submit_area
@@ -1030,6 +1054,8 @@ id textSpacerNoTitle
 id text_input_password_toggle
 id text_view_id
 id text_view_id2
+id text_view_message_contents
+id text_view_subject_contents
 id textinput_counter
 id textinput_error
 id time
@@ -1049,6 +1075,7 @@ id uniform
 id up
 id useLogo
 id userEmailText
+id user_logout
 id view_offset_helper
 id viewallbutton
 id visible
@@ -1096,6 +1123,7 @@ layout abc_search_view
 layout abc_select_dialog_material
 layout activity_add_user
 layout activity_addsensor
+layout activity_email
 layout activity_log
 layout activity_login
 layout activity_main
@@ -1116,6 +1144,7 @@ layout design_navigation_item_subheader
 layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_password_icon
+layout device_spinner
 layout notification_action
 layout notification_action_tombstone
 layout notification_media_action
@@ -1134,8 +1163,10 @@ layout notification_template_part_time
 layout select_dialog_item_material
 layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
+layout spinner_years
 layout support_simple_spinner_dropdown_item
 layout tooltip
+menu menu_main
 mipmap ic_launcher
 mipmap ic_launcher_round
 string abc_action_bar_home_description

@@ -98,8 +98,12 @@ public class Activity_log extends AppCompatActivity {
         addLog("");
     }
     public void search(View v){
-        String deviceChosen = device_spinner.getSelectedItem().toString();
-        int numLogs = addLog(deviceChosen);
+        Object deviceObject = device_spinner.getSelectedItem();
+        int numLogs = 0;
+        if(deviceObject != null) {
+            String deviceChosen = deviceObject.toString();
+            numLogs = addLog(deviceChosen);
+        }
         if(numLogs == 0){
             Toast.makeText(this, "Did not find triggers in that date range", Toast.LENGTH_SHORT).show();
         }
@@ -188,7 +192,6 @@ public class Activity_log extends AppCompatActivity {
 
 
         int count = 0;
-        /* display views */
         Long dayToMs = TimeUnit.DAYS.toMillis(1);
         for (int x = 0; x < allDevicesDates.size(); x++) {
             /* if device is between ranges */
