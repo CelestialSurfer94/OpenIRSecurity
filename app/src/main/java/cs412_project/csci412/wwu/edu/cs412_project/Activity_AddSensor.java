@@ -41,7 +41,6 @@ public class Activity_AddSensor extends AppCompatActivity {
     public void createDevice(View v) {
         EditText name_field = (EditText) findViewById(R.id.name_field);
         CheckBox enable_check = (CheckBox) findViewById(R.id.enable_check);
-        CheckBox receive_check = (CheckBox) findViewById(R.id.receive_check);
         boolean armed = enable_check.isChecked();
         if (name_field.getText().toString().equals("")) {
             Toast.makeText(this, "Sensor name can not be empty.", Toast.LENGTH_LONG).show();
@@ -60,7 +59,6 @@ public class Activity_AddSensor extends AppCompatActivity {
         Toast.makeText(this, "Sensor Added", Toast.LENGTH_LONG).show();
         name_field.setText("");
         enable_check.setChecked(false);
-        receive_check.setChecked(false);
     }
 
     public void goBack(View v) {
