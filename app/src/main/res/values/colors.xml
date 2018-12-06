@@ -7,5 +7,13 @@
     <color name="dark_grey">#7B8D93</color>
     <color name="WWU_blue">#003f87</color>
     <color name="WWU_light_blue">#0083d6</color>
+    <color name="test">#3fc4dc</color>
+    <color name="backgroundColor">#dadee1</color>
+    <color name="textColor">#373c3e</color>
+    <color name="buttonColor">#107895</color>
+    <color name="buttonText">#FFFFFF</color>
+    <color name="statusBar">#00548a</color>
+
+
 </resources>
 

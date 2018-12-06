@@ -4,5 +4,5 @@
     android:id="@+id/device_spinner_years"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:textSize="12sp"
+    android:textSize="14sp"
     />

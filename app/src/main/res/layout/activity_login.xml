@@ -65,7 +65,8 @@
 
             <Button
                 android:id="@+id/email_sign_in_button"
-                style="?android:textAppearanceSmall"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:textColor="@color/buttonText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -74,9 +75,10 @@
 
             <Button
                 android:id="@+id/register_button"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:textColor="@color/buttonText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:onClick="register"
                 android:text="@string/register" />
 
