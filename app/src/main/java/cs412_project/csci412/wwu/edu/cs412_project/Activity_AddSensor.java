@@ -52,7 +52,7 @@ public class Activity_AddSensor extends AppCompatActivity {
             return;
         }
 
-        Device d = new Device(name_field.getText().toString());
+        Device d = new Device(name_field.getText().toString().trim());
         d.setArmed(armed);
         dbm.getUser().addDevices(d);
         dbm.addDevice(d, dbm.getUser().getId());

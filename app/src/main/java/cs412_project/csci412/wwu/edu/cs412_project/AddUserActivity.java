@@ -41,7 +41,7 @@ public class AddUserActivity extends AppCompatActivity {
     }
 
     public void createUser(View v) {
-        String email = emailText.getText().toString();
+        String email = emailText.getText().toString().trim();
         String pass0 = password0Text.getText().toString();
         String pass1 = password1Text.getText().toString();
 
